@@ -1,6 +1,5 @@
 // if (process.env.NODE_ENV !== "production") {
 // }
-require("dotenv").config();
 
 // ========= import required modules =====================
 const express = require("express");
@@ -10,6 +9,7 @@ const path = require("path");
 // require config ;
 process.env.SUPPRESS_NO_CONFIG_WARNING = "y";
 const config = require("config");
+require("dotenv").config();
 
 const fs = require("fs");
 const fileUpload = require("express-fileupload");
