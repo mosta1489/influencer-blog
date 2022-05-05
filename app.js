@@ -17,18 +17,17 @@ const fileUpload = require("express-fileupload");
 const port = process.env.PORT || 3000;
 
 //========== connect to mongodb =====================
-const DATABASE_URL =
-  "mongodb+srv://admin:admin@influencer-cluster.bcp2q.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
-mongoose
-  .connect(DATABASE_URL, {
-    useNewUrlParser: true,
-  })
-  .then(() => {
-    console.log("MongoDB Connected .....");
-  })
-  .catch((err) => {
-    console.log(err.message);
-  });
+
+// mongoose
+//   .connect(DATABASE_URL, {
+//     useNewUrlParser: true,
+//   })
+//   .then(() => {
+//     console.log("MongoDB Connected .....");
+//   })
+//   .catch((err) => {
+//     console.log(err.message);
+//   });
 
 // ========= set view engine ==================
 app.set("view engine", "ejs");
@@ -44,7 +43,7 @@ const session = require("express-session");
 const sessionStore = require("connect-mongodb-session")(session);
 const flash = require("connect-flash");
 const store = new sessionStore({
-  uri: process.env.DATABASE_URL,
+  uri: "mongodb+srv://admin:admin@influencer-cluster.bcp2q.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
   collection: "sessions",
 });
 
@@ -61,13 +60,13 @@ app.use(flash());
 
 // ========= import routes ==================
 const homeRout = require("./routes/homeRout");
-// const loginRoutes = require("./routes/loginRoutes");
+const loginRoutes = require("./routes/loginRoutes");
 // const adminRoute = require("./routes/adminRoute");
 // const userRoute = require("./routes/userRoute");
 
 // ========= use routes ==================
 app.use("/", homeRout);
-// app.use("/login", loginRoutes);
+app.use("/login", loginRoutes);
 // app.use("/admin", adminRoute);
 // app.use("/user", userRoute);
 app.get("/", (req, res) => {
