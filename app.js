@@ -11,7 +11,7 @@ process.env.SUPPRESS_NO_CONFIG_WARNING = "y";
 const config = require("config");
 
 if (process.env.NODE_ENV !== "production") {
-  require("dotenv").config({ silent: process.env.NODE_ENV === "production" });
+  require("dotenv").config();
 }
 
 const fs = require("fs");
