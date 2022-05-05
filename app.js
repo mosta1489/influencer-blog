@@ -16,6 +16,18 @@ const fileUpload = require("express-fileupload");
 
 const port = process.env.PORT || 3000;
 
+//========== connect to mongodb =====================
+mongoose
+  .connect(process.env.DATABASE_URL, {
+    useNewUrlParser: true,
+  })
+  .then(() => {
+    console.log("MongoDB Connected .....");
+  })
+  .catch((err) => {
+    console.log(err.message);
+  });
+
 // ========= set view engine ==================
 app.set("view engine", "ejs");
 app.set("views", "views");
