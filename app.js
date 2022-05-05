@@ -9,7 +9,10 @@ const path = require("path");
 // require config ;
 process.env.SUPPRESS_NO_CONFIG_WARNING = "y";
 const config = require("config");
-require("dotenv").config();
+
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config({ silent: process.env.NODE_ENV === "production" });
+}
 
 const fs = require("fs");
 const fileUpload = require("express-fileupload");
