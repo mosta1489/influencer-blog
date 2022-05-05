@@ -17,8 +17,10 @@ const fileUpload = require("express-fileupload");
 const port = process.env.PORT || 3000;
 
 //========== connect to mongodb =====================
+const DATABASE_URL =
+  "mongodb+srv://admin:admin@influencer-cluster.bcp2q.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 mongoose
-  .connect(process.env.DATABASE_URL, {
+  .connect(DATABASE_URL, {
     useNewUrlParser: true,
   })
   .then(() => {
