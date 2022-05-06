@@ -1,1 +1,110 @@
-<h1>Home page</h1>
+<html lang="en">
+  <%- include("components/header.ejs") %>
+  <body>
+    <section id="content">
+      <%- include("components/navbat.ejs") %>
+      <b></b>
+      <%- include('components/sendMessage.ejs') %>
+
+      <div class="container">
+        <% if (isAdmin) { %>
+        <form id="addPost" action="/addPost" method="post"></form>
+        <div class="card">
+          <h4 class="card-header">Create post</h4>
+          <div class="card-body">
+            <div class="form-floating">
+              <textarea
+                name="title"
+                form="addPost"
+                style="min-height: 80px"
+                class="form-control"
+                placeholder="Leave a comment here"
+                id="floatingTextarea"
+              ></textarea>
+              <label for="floatingTextarea">What's on your mind</label>
+              <br />
+              <div class="input-group">
+                <input
+                  name="image"
+                  form="addPost"
+                  type="file"
+                  class="form-control"
+                  id="inputGroupFile04"
+                  aria-describedby="inputGroupFileAddon04"
+                  aria-label="Upload"
+                />
+
+                <button
+                  form="addPost"
+                  style="margin-left: 50px; width: 20%"
+                  class="btn btn-primary"
+                  type="submit"
+                  id="inputGroupFileAddon04"
+                >
+                  <b>Post</b>
+                </button>
+              </div>
+            </div>
+            <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+          </div>
+        </div>
+        <% } %> <b></b>
+        <% for( let i = 0; i < 10; i++ ) { %>
+
+        <div class="card">
+          <div class="card-body">
+            <div class="profile-post">
+              <img src="/images/me.jpg" class="card-img" alt="..." />
+              <h4>Mostafa Ahmed</h4>
+            </div>
+            <div class="date">
+              <p class="card-text">
+                <small class="text-muted">Last updated 3 mins ago</small>
+              </p>
+            </div>
+
+            <a href="">
+              <p class="card-text">
+                This is a wider card with supporting text below as a natural
+                lead-in to additional content. This content is a little bit
+                longer. This is a wider card with supporting text below as a
+                natural lead-in to additional content.
+              </p>
+
+              <img src="/images/me.jpg" class="card-img" alt="..." />
+            </a>
+          </div>
+          <form id="rate<%= i %>" action="/" method="get"></form>
+          <% if (isLoggedIn && !isAdmin) { %>
+          <div class="rate">
+            <!-- <input
+                        type="checkbox"
+                        id="star5"
+                        name="like"
+                        form="rate"
+                      /> -->
+            <!-- <label for="star5" title="text"></label> -->
+            <i class="fa-solid fa-thumbs-up"></i>
+
+            <div class="comment">
+              <input
+                type="text"
+                name="comment"
+                class="form-control"
+                form="rate<%= i %>"
+              />
+            </div>
+            <button type="submit" class="btn btn-primary" form="rate<%= i %>">
+              comment
+            </button>
+          </div>
+          <% } %>
+        </div>
+
+        <% } %>
+      </div>
+    </section>
+
+    <%- include("components/scripts.ejs") %>
+  </body>
+</html>

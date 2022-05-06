@@ -1,0 +1,24 @@
+<html lang="en">
+  <%- include("components/header.ejs") %>
+  <body>
+    <style>
+      .container,
+      .container-lg,
+      .container-md,
+      .container-sm,
+      .container-xl,
+      .container-xxl {
+        max-width: 50%;
+      }
+    </style>
+    <section id="content">
+      <%- include("components/navbat.ejs") %>
+      <b></b>
+      <div class="container">
+        <!-- Modal -->
+        <%- include('components/sendMessage.ejs') %>
+      </div>
+    </section>
+    <%- include("components/scripts.ejs") %>
+  </body>
+</html>

@@ -1,0 +1,83 @@
+.container,
+.container-lg,
+.container-md,
+.container-sm,
+.container-xl,
+.container-xxl {
+  max-width: 50%;
+}
+
+.card {
+  margin-top: 10px;
+}
+.profile-post img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.profile-post {
+  display: grid;
+  grid-template-columns: 1fr 10fr;
+}
+.profile-post h4 {
+  margin: 0;
+  padding: 5px 3px;
+}
+.date {
+  padding: 10px 0;
+}
+.card-body a {
+  color: #000;
+}
+
+.rate {
+  height: 46px;
+  padding: 5px;
+  display: grid;
+  grid-template-columns: 1fr 4fr 2fr;
+}
+.rate:not(:checked) > input {
+  position: absolute;
+  top: -9999px;
+}
+.rate:not(:checked) > label {
+  float: left;
+  width: 2em;
+  overflow: hidden;
+  white-space: nowrap;
+  cursor: pointer;
+  font-size: 30px;
+  color: #ccc;
+  margin-left: 30px;
+}
+
+.rate > input:checked ~ label {
+  color: #941f1f;
+}
+.rate:not(:checked) > label:hover,
+.rate:not(:checked) > label:hover ~ label {
+  color: #941f1f;
+}
+.rate > input:checked + label:hover,
+.rate > input:checked + label:hover ~ label,
+.rate > input:checked ~ label:hover,
+.rate > input:checked ~ label:hover ~ label,
+.rate > label:hover ~ input:checked ~ label {
+  color: #385898;
+}
+.rate button {
+  margin-right: 30px;
+  margin-top: -5px;
+  margin-left: 20px;
+  height: 38px;
+}
+.rate .comment {
+  margin-top: -5px;
+}
+.rate i {
+  font-size: 30px;
+  color: rgb(26, 29, 235);
+  margin-left: 30px;
+}

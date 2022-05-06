@@ -1,20 +1,102 @@
-<nav>
-  <form action="#"></form>
+<nav style="position: fixed; width: 100%; margin-bottom: 20px">
+  <div class="left row">
+    <form class="col" action="/search/" method="get">
+      <div class="form-input">
+        <input name="search" type="search" placeholder="Search..." />
+        <button type="submit" class="search-btn">
+          <i class="bx bx-search"></i>
+        </button>
+      </div>
+    </form>
+    <% if (isLoggedIn) { %>
+
+    <div class="col">
+      <nav class="navbar navbar-expand-sm bg-light">
+        <ul class="navbar-nav">
+          <% if (isAdmin) { %>
+
+          <li class="nav-item">
+            <button
+              style="font-size: 17px"
+              type="button"
+              class="btn"
+              data-toggle="modal"
+              data-target="#exampleModalCenter"
+            >
+              <b>Send message</b>
+            </button>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" style="font-size: 17px" href="#"
+              ><b>Statistics</b></a
+            >
+          </li>
+
+          <% }else{ %>
+          <b></b>
+          <%# if (plan == 'basic') { %>
+          <li class="nav-item">
+            <button
+              style="font-size: 17px"
+              type="button"
+              class="btn"
+              data-toggle="modal"
+              data-target="#exampleModalCenter"
+            >
+              <b>Send message</b>
+            </button>
+          </li>
+          <%# } %>
+
+          <li class="nav-item">
+            <a class="nav-link" href="#" style="font-size: 17px"
+              ><b> Pinned posts</b></a
+            >
+          </li>
+
+          <% } %>
+        </ul>
+      </nav>
+    </div>
+
+    <% } %>
+  </div>
+
+  <b></b>
+
+  <% if (isLoggedIn) { %>
+
   <a href="#" class="notification">
     <i class="bx bxs-bell"></i>
     <span class="num">8</span>
   </a>
-  <div><b style="font-size: 20px">Full Name</b></div>
+
+  <div style="max-width: 150px; width: 100%; text-align: center">
+    <b style="font-size: 20px"><%= fullName %></b>
+  </div>
+
   <div class="dropdown profile" onclick="myFunction()">
     <img src="images/me.jpg" />
     <div id="menu" class="dropdown-content">
-      <a href="#">Link 1</a>
-      <a href="#">Link 2</a>
-      <a href="#">Link 3</a>
+      <% if (!isAdmin) { %>
+      <a href="#"> Profile </a>
+
+      <% } %>
+      <a href="#">Setting</a>
+      <a href="/login/logout" class="logout"> Logout </a>
     </div>
-    <!-- </a> -->
   </div>
+
+  <% }else{ %>
+  <div class="dropdown" style="margin-left: auto">
+    <form action="/login" method="get">
+      <button class="dropbtn">Sign in</button>
+    </form>
+  </div>
+  <% } %>
 </nav>
+<div style="height: 50px; margin-bottom: 30px"></div>
 
 <script>
   function myFunction() {

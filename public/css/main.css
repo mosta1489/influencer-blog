@@ -68,11 +68,16 @@ body {
 #content nav .nav-link:hover {
   color: var(--blue);
 }
+#content nav .left {
+  width: 80%;
+  margin-right: auto;
+  margin-left: 1%;
+}
+
 #content nav form {
-  max-width: 400px;
+  max-width: 350px;
   width: 100%;
   margin-right: auto;
-  margin-left: 10%;
 }
 #content nav form .form-input {
   display: flex;
@@ -129,14 +134,19 @@ body {
   height: 40px;
   object-fit: cover;
   border-radius: 50%;
+  cursor: pointer;
 }
 
 .dropbtn {
-  /* background-color: #04aa6d; */
+  background-color: #00262b;
   color: white;
-  padding: 20px;
-  font-size: 16px;
+  /* color: black; */
+  padding: 7px 15px;
   border: none;
+  height: 42px;
+  width: 90px;
+  font-size: 1.125rem;
+  font-weight: 500;
 }
 
 .dropdown {

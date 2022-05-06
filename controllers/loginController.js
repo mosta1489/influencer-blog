@@ -5,8 +5,8 @@ function getLogin(req, res, next) {
     error: req.flash("error")[0],
     success: req.flash("success")[0],
     isAdmin: req.session.isAdmin,
+    isLoggedIn: req.session.userId,
     userName: req.session.userName,
-    userId: req.session.userId,
     fullName: req.session.fullName,
   });
 }

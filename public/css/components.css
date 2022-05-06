@@ -11,7 +11,7 @@ body {
   align-items: center;
   padding: 20px;
 }
-/* nav{
+/* nav {
   flex: 1;
   text-align: right;
 } */
@@ -56,7 +56,7 @@ p {
   line-height: 60px;
   margin: 25px 0;
 }
-.btn {
+/* .btn {
   display: inline-block;
   background-color: #ff523b;
   color: #fff;
@@ -64,10 +64,10 @@ p {
   margin: 30px 0;
   border-radius: 30px;
   transition: background 0.5s;
-}
-.btn:hover {
+} */
+/* .btn:hover {
   background: #563434;
-}
+} */
 .header {
   background: radial-gradient(#fff, #ffd6d6);
 }
@@ -257,13 +257,13 @@ ul {
   margin: 100px auto 50px;
   margin-left: 20px;
 }
-select {
+/* select {
   border: 1px solid #ff523b;
   padding: 5px;
 }
 select:focus {
   outline: none;
-}
+} */
 .page-btn {
   margin: 0 auto 80px;
 }
@@ -298,11 +298,11 @@ select:focus {
   font-size: 22px;
   font-weight: bold;
 }
-.single-product select {
+/* .single-product select {
   display: block;
   padding: 10px;
   margin-top: 20px;
-}
+} */
 .single-product input {
   width: 50px;
   height: 40px;
@@ -370,15 +370,15 @@ form input {
   padding: 0 10px;
   border: 1px solid #ccc;
 }
-form .btn {
+/* form .btn {
   width: 100%;
   border: none;
   cursor: pointer;
   margin: 10px 0;
-}
-form .btn:focus {
+} */
+/* form .btn:focus {
   outline: none;
-}
+} */
 #loginform {
   left: -300px;
   padding-left: 70px;
