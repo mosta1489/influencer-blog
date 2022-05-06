@@ -49,17 +49,49 @@
           </div>
         </div>
         <% } %> <b></b>
-        <% for( let i = 0; i < 10; i++ ) { %>
+        <% for( let i = 0; i < 11; i++ ) { %>
 
         <div class="card">
           <div class="card-body">
             <div class="profile-post">
               <img src="/images/me.jpg" class="card-img" alt="..." />
               <h4>Mostafa Ahmed</h4>
+
+              <!-- ========================================== -->
+              <div class="savePost">
+                <form action="/savePost" method="get" id="savePost">
+                  <input type="hidden" name="postId" value="4565556456" />
+                </form>
+
+                <div class="dropdown save" onclick="myFunction2()">
+                  <i class="fa-solid fa-ellipsis" style="font-size: 20px"></i>
+
+                  <div id="save" class="dropdown-content">
+                    <button
+                      class="btn"
+                      style="font-size: 1.5rem"
+                      type="submit"
+                      form="savePost"
+                    >
+                      <i
+                        class="fa-solid fa-bookmark"
+                        style="font-size: 22px; margin-right: 3px"
+                      ></i>
+                      save post
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <!-- ========================================== -->
             </div>
             <div class="date">
               <p class="card-text">
-                <small class="text-muted">Last updated 3 mins ago</small>
+                <!-- <small class="text-muted"
+                  >Last updated Nov 27, 2021 >>> 85:44</small
+                > -->
+                <h6 class="text-muted"
+                  >Last updated  27 / 11 / 2021 >>> 85:44</h6
+                >
               </p>
             </div>
 
@@ -71,7 +103,7 @@
                 natural lead-in to additional content.
               </p>
 
-              <img src="/images/me.jpg" class="card-img" alt="..." />
+              <img src="/images/mm.jpeg" class="card-img" alt="..." />
             </a>
           </div>
           <form id="rate<%= i %>" action="/" method="get"></form>
@@ -102,9 +134,108 @@
         </div>
 
         <% } %>
+
+
+        <!--================test postst=================================== -->
+        <% for( let i = 0; i < 11; i++ ) { %>
+
+          <div class="card">
+            <div class="card-body">
+              <div class="profile-post">
+                <img src="/images/me.jpg" class="card-img" alt="..." />
+                <h4>Mostafa Ahmed</h4>
+  
+                <!-- ========================================== -->
+                <div class="savePost">
+                  <form action="/savePost" method="get" id="savePost">
+                    <input type="hidden" name="postId" value="4565556456" />
+                  </form>
+  
+                  <div class="dropdown save" onclick="myFunction2()">
+                    <i class="fa-solid fa-ellipsis" style="font-size: 20px"></i>
+  
+                    <div id="save" class="dropdown-content">
+                      <button
+                        class="btn"
+                        style="font-size: 1.5rem"
+                        type="submit"
+                        form="savePost"
+                      >
+                        <i
+                          class="fa-solid fa-bookmark"
+                          style="font-size: 22px; margin-right: 3px"
+                        ></i>
+                        save post
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <!-- ========================================== -->
+              </div>
+              <div class="date">
+                <p class="card-text">
+                  <!-- <small class="text-muted"
+                    >Last updated Nov 27, 2021 >>> 85:44</small
+                  > -->
+                  <h6 class="text-muted"
+                    >Last updated  27 / 11 / 2021 >>> 85:44</h6
+                  >
+                </p>
+              </div>
+  
+              <a href="">
+                <p class="card-text">
+                  This is a wider card with supporting text below as a natural
+                  lead-in to additional content. This content is a little bit
+                  longer. This is a wider card with supporting text below as a
+                  natural lead-in to additional content.
+                </p>
+  
+                <img src="/images/ahly.png" class="card-img" alt="..." />
+              </a>
+            </div>
+            <form id="rate<%= i %>" action="/" method="get"></form>
+            <% if (isLoggedIn && !isAdmin) { %>
+            <div class="rate">
+              <!-- <input
+                          type="checkbox"
+                          id="star5"
+                          name="like"
+                          form="rate"
+                        /> -->
+              <!-- <label for="star5" title="text"></label> -->
+              <i class="fa-solid fa-thumbs-up"></i>
+  
+              <div class="comment">
+                <input
+                  type="text"
+                  name="comment"
+                  class="form-control"
+                  form="rate<%= i %>"
+                />
+              </div>
+              <button type="submit" class="btn btn-primary" form="rate<%= i %>">
+                comment
+              </button>
+            </div>
+            <% } %>
+          </div>
+  
+          <% } %>
+        <!--=================================================================================== -->
       </div>
     </section>
 
     <%- include("components/scripts.ejs") %>
+    <script>
+      function myFunction2() {
+        var y = document.getElementById("save");
+        if (y.style.display === "none") {
+          y.style.display = "block";
+        } else {
+          y.style.display = "none";
+        }
+      }
+    </script>
   </body>
 </html>

@@ -8,11 +8,14 @@
         </button>
       </div>
     </form>
-    <% if (isLoggedIn) { %>
 
     <div class="col">
       <nav class="navbar navbar-expand-sm bg-light">
         <ul class="navbar-nav">
+          <% if (isLoggedIn) { %>
+          <li class="nav-item">
+            <a class="nav-link" style="font-size: 17px" href="/"><b>Home</b></a>
+          </li>
           <% if (isAdmin) { %>
 
           <li class="nav-item">
@@ -56,11 +59,15 @@
           </li>
 
           <% } %>
+          <b></b>
+          <% }else{ %>
+          <li class="nav-item">
+            <a class="nav-link" style="font-size: 17px" href="/"><b>Home</b></a>
+          </li>
+          <% } %>
         </ul>
       </nav>
     </div>
-
-    <% } %>
   </div>
 
   <b></b>
