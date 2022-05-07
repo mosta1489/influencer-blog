@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const userModel = require("./userModel");
+const commentModel = require("./commentModel");
 const fs = require("fs");
 
 const DATABASE_URL =
@@ -119,6 +120,22 @@ function addPost(postData, image) {
   });
 }
 // ===========================================================
-
+function getPostData(postData) {
+  return new Promise((resolve, reject) => {
+    connection()
+      .then(async () => {
+        const postId = mongoose.Types.ObjectId(postData.id);
+        const postInDB = await post.findOne({ _id: postId });
+        return postInDB;
+      })
+      .then(async (postInDB) => {
+        const comments = await commentModel.getPostCommnts(postInDB.id);
+        postInDB.comments = comments;
+        resolve(postInDB);
+      })
+      .catch((error) => reject(error));
+  });
+}
 exports.addPost = addPost;
 exports.getAllPosts = getAllPosts;
+exports.getPostData = getPostData;

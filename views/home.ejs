@@ -170,7 +170,7 @@
 
             <!------------------------->
             <!-- start post contant --->
-            <a href="">
+            <a href="/post?user=<%= posts[i].userName %>&id=<%= posts[i].id %>">
               <% if (posts[i].title) { %>
               <p class="card-text"><%= posts[i].title %></p>
               <% } %>
@@ -192,12 +192,15 @@
           <!------------------------------->
           <!-- start rating and comment --->
 
-          <form id="rate<%= i %>" action="/" method="get">
+          <form id="rate<%= i %>" action="/user/addComment" method="post">
             <input
               type="hidden"
               name="userName"
-              value="<%= posts[i].userName %> "
+              value="<%= posts[i].userName %>"
             />
+            <input type="hidden" name="id" value="<%= posts[i].id %>" />
+            <input type="hidden" name="fullName" value="<%= fullName %>" />
+            <input type="hidden" name="userImage" value="<%= userImage %>" />
           </form>
 
           <% if (isLoggedIn) { %>

@@ -1,0 +1,143 @@
+<html lang="en">
+  <%- include("components/header.ejs") %>
+  <body>
+    <section id="content">
+      <%- include("components/navbat.ejs") %>
+      <b></b>
+
+      <!-- include model of send messages -->
+      <%- include('components/sendMessage.ejs') %>
+      <!-- ------------------------------ -->
+
+      <div class="container">
+        <div class="card">
+          <!------- start card body ------------->
+          <div class="card-body">
+            <div class="profile-post">
+              <img
+                src="<%#= posts[i].userImage %> "
+                class="card-img"
+                alt="..."
+              />
+              <h4 style="color: black"><%#= posts[i].userFullName %></h4>
+
+              <!----------------------->
+              <!--start save a post  -->
+              <div class="savePost">
+                <form action="/user/savePost" method="post" id="savePost">
+                  <input
+                    type="hidden"
+                    name="postId"
+                    value="<%#= posts[i]._id %>"
+                  />
+                  <input
+                    type="hidden"
+                    name="userName"
+                    value="<%#= userName %>"
+                  />
+                </form>
+
+                <div class="dropdown save" onclick="myFunction2('<%= i%>')">
+                  <i class="fa-solid fa-ellipsis" style="font-size: 20px"></i>
+                  <div id="save<%#= i %>" class="dropdown-content button-save">
+                    <button
+                      class="btn"
+                      style="font-size: 1.3rem"
+                      type="submit"
+                      form="savePost"
+                    >
+                      <i
+                        class="fa-solid fa-bookmark"
+                        style="font-size: 15px; margin-right: 8px"
+                      ></i>
+                      save post
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <!-- end save a post ------>
+              <!------------------------->
+            </div>
+
+            <p class="card-text" style="margin: -5px 0 15px 55px">
+              <small class="text-muted">
+                <%#= posts[i].date %>&nbsp; &nbsp;<%#= posts[i].dateTime %>
+              </small>
+            </p>
+
+            <!------------------------->
+            <!-- start post contant --->
+            <a
+              href="/post?user=<%#= posts[i].userName %>&id=<%#= posts[i].id %>"
+            >
+              <% if (posts[i].title) { %>
+              <p class="card-text"><%#= posts[i].title %></p>
+              <% } %>
+              <b></b>
+              <% if (posts[i].imagePath) { %>
+              <img
+                src="<%#= posts[i].imagePath  %> "
+                class="card-img"
+                alt="..."
+              />
+              <% } %>
+            </a>
+            <!-- end post contant ----->
+            <!-- ----------------------->
+          </div>
+          <!-------- end card body ---------------->
+          <!--------------------------------------->
+
+          <!------------------------------->
+          <!-- start rating and comment --->
+
+          <form id="rate<%#= i %>" action="/user/addComment" method="post">
+            <input
+              type="hidden"
+              name="userName"
+              value="<%#= posts[i].userName %>"
+            />
+            <input type="hidden" name="id" value="<%#= posts[i].id %>" />
+            <input type="hidden" name="fullName" value="<%#= fullName %>" />
+            <input type="hidden" name="userImage" value="<%#= userImage %>" />
+          </form>
+
+          <% if (isLoggedIn) { %>
+
+          <div class="rate">
+            <i class="fa-solid fa-thumbs-up"></i>
+
+            <div class="comment">
+              <input
+                type="text"
+                name="comment"
+                class="form-control"
+                form="rate<%#= i %>"
+              />
+            </div>
+            <button type="submit" class="btn btn-primary" form="rate<%#= i %>">
+              comment
+            </button>
+          </div>
+
+          <% } %>
+          <!-- end rating and comment ----->
+          <!-- ---------------------------->
+        </div>
+      </div>
+    </section>
+
+    <!-- include java scripts links  -->
+    <%- include("components/scripts.ejs") %>
+    <script>
+      function myFunction2(index) {
+        var y = document.getElementById(`save${index}`);
+        if (y.style.display === "none") {
+          y.style.display = "block";
+        } else {
+          y.style.display = "none";
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -5,8 +5,14 @@ const gardsAdmin = require("./guard/checkAdmin");
 
 // =========== getHomePage route ===========
 route.get("/", homeController.getHomePage);
+// ==========================================
 
 // =========== create post route ============
 route.post("/addPost", homeController.addPost);
+// ==========================================
+
+// ======== get post page ===================
+route.get("/post", gardsUser.isLoggedIn, homeController.getPostPage);
+// ==========================================
 
 module.exports = route;

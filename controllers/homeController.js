@@ -49,5 +49,21 @@ function addPost(req, res, next) {
 }
 // ===========================================================
 
+// =========== get ===========================================
+function getPostPage(req, res) {
+  const postData = req.query;
+  postModel
+    .getPostData(postData)
+    .then((result) => {
+      console.clear();
+      console.log(result);
+      console.log(result.comments);
+    })
+    .catch((err) => console.log(err));
+  res.send("post page");
+}
+// ===========================================================
+
 exports.getHomePage = getHomePage;
 exports.addPost = addPost;
+exports.getPostPage = getPostPage;
