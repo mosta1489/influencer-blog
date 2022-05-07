@@ -62,13 +62,13 @@ app.use(flash());
 const homeRout = require("./routes/homeRout");
 const loginRoutes = require("./routes/loginRoutes");
 const adminRoute = require("./routes/adminRoute");
-// const userRoute = require("./routes/userRoute");
+const userRoute = require("./routes/userRoute");
 
 // ========= use routes ==================
 app.use("/", homeRout);
 app.use("/login", loginRoutes);
 app.use("/admin", adminRoute);
-// app.use("/user", userRoute);
+app.use("/user", userRoute);
 app.get("/", (req, res) => {
   res.send("<h1>Hello World</h1>");
 });

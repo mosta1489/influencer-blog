@@ -1,18 +1,29 @@
 const postModel = require("../models/postModel");
 const configFile = require("config");
 
-// getHomePage function
+// ==============  getHomePage function ====================
 function getHomePage(req, res, next) {
-  res.render("home", {
-    error: req.flash("error")[0],
-    success: req.flash("success")[0],
-    isAdmin: req.session.isAdmin,
-    isLoggedIn: req.session.userId,
-    userName: req.session.userName,
-    fullName: req.session.fullName,
-    userPlan: req.session.userPlan,
-  });
+  postModel
+    .getAllPosts()
+    .then((posts) => {
+      res.render("home", {
+        posts: posts,
+        error: req.flash("error")[0],
+        success: req.flash("success")[0],
+        isAdmin: req.session.isAdmin,
+        isLoggedIn: req.session.userId,
+        userName: req.session.userName,
+        fullName: req.session.fullName,
+        userPlan: req.session.userPlan,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
+// ===========================================================
+
+// ============== add Post function ==========================
 function addPost(req, res, next) {
   var image = "";
   const postData = req.body;
@@ -35,5 +46,7 @@ function addPost(req, res, next) {
       });
   }
 }
+// ===========================================================
+
 exports.getHomePage = getHomePage;
 exports.addPost = addPost;

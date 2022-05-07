@@ -12,46 +12,57 @@
       <div class="container">
         <!-- =========== alert message  ===========-->
         <style>
-        .alert button {
-          border: none;
-          position: absolute;
-          right: 30px;
-          background-color: inherit;
-        }
+          .alert button {
+            border: none;
+            position: absolute;
+            right: 30px;
+            background-color: inherit;
+          }
         </style>
         <% if (success) { %>
-          <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <%= success %>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="alert"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <% } %>
-          <p></p>
-          <% if (error) { %>
-          <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <%= error %>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="alert"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <% } %>
+        <div
+          class="alert alert-success alert-dismissible fade show"
+          role="alert"
+        >
+          <%= success %>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="alert"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <% } %>
+        <p></p>
+        <% if (error) { %>
+        <div
+          class="alert alert-danger alert-dismissible fade show"
+          role="alert"
+        >
+          <%= error %>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="alert"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <% } %>
         <!-- ====================================== -->
         <!-- ============= start create new poost ============ -->
 
-        <% if (isAdmin || userPlan == "premium")  { %> 
-        <form id="addPost" action="/addPost" method="post" enctype="multipart/form-data">
-          <input type="hidden" name="userName" value="<%= userName %>" >
+        <% if (isAdmin || userPlan == "premium") { %>
+        <form
+          id="addPost"
+          action="/addPost"
+          method="post"
+          enctype="multipart/form-data"
+        >
+          <input type="hidden" name="userName" value="<%= userName %>" />
         </form>
         <div class="card">
           <h4 class="card-header">Create post</h4>
@@ -95,23 +106,34 @@
 
         <!-- =============== end create new poost ============= -->
         <!-- ================================================== -->
-        
+
         <!-- ================================================= -->
         <!-- ============== start show all posts ==============-->
-        <% for( let i = 0; i < 10; i++ ) { %>
+        <% if (posts[0]) { %>
+        <b></b>
+        <% for( let i = 0; i < posts.length; i++ ) { %>
 
         <div class="card">
           <!------- start card body ------------->
           <div class="card-body">
             <div class="profile-post">
               <img src="/images/me.jpg" class="card-img" alt="..." />
-              <h4>Mostafa Ahmed</h4>
+              <h4 style="color: black">Mostafa Ahmed</h4>
 
-            <!----------------------->
-            <!--start save a post  -->
+              <!----------------------->
+              <!--start save a post  -->
               <div class="savePost">
-                <form action="/savePost" method="post" id="savePost">
-                  <input type="hidden" name="postId" value="4565556456" />
+                <form action="/user/savePost" method="post" id="savePost">
+                  <input
+                    type="hidden"
+                    name="postId"
+                    value="<%= posts[i]._id %>"
+                  />
+                  <input
+                    type="hidden"
+                    name="userName"
+                    value="<%= userName %>"
+                  />
                 </form>
 
                 <div class="dropdown save" onclick="myFunction2('<%= i%>')">
@@ -119,57 +141,63 @@
                   <div id="save<%= i %>" class="dropdown-content button-save">
                     <button
                       class="btn"
-                      style="font-size: 1.5rem"
+                      style="font-size: 1.3rem"
                       type="submit"
                       form="savePost"
                     >
                       <i
                         class="fa-solid fa-bookmark"
-                        style="font-size: 22px; margin-right: 3px"
+                        style="font-size: 15px; margin-right: 8px"
                       ></i>
                       save post
                     </button>
                   </div>
                 </div>
               </div>
-            <!-- end save a post ------>
-            <!------------------------->
+              <!-- end save a post ------>
+              <!------------------------->
+            </div>
 
-            </div>
-            <div class="date">
-              <p class="card-text">
-                <!-- <small class="text-muted"
-                  >Last updated Nov 27, 2021 >>> 85:44</small
-                > -->
-                <h6 class="text-muted"
-                  >Last updated  27 / 11 / 2021 >>> 85:44</h6
-                >
-              </p>
-            </div>
+            <p class="card-text" style="margin: -5px 0 15px 55px">
+              <small class="text-muted">
+                <%= posts[i].date %>&nbsp; &nbsp;<%= posts[i].dateTime %>
+              </small>
+            </p>
 
             <!------------------------->
             <!-- start post contant --->
             <a href="">
-              <p class="card-text">
-                This is a wider card with supporting text below as a natural
-                lead-in to additional content. This content is a little bit
-                longer. This is a wider card with supporting text below as a
-                natural lead-in to additional content.
-              </p>
-
-              <img src="/images/mm.jpeg" class="card-img" alt="..." />
+              <% if (posts[i].title) { %>
+              <p class="card-text"><%= posts[i].title %></p>
+              <% } %>
+              <b></b>
+              <% if (posts[i].imagePath) { %>
+              <img
+                src="<%= posts[i].imagePath  %> "
+                class="card-img"
+                alt="..."
+              />
+              <% } %>
             </a>
             <!-- end post contant ----->
             <!-- ----------------------->
-
           </div>
           <!-------- end card body ---------------->
           <!--------------------------------------->
 
           <!------------------------------->
           <!-- start rating and comment --->
-          <form id="rate<%= i %>" action="/" method="get"></form>
+
+          <form id="rate<%= i %>" action="/" method="get">
+            <input
+              type="hidden"
+              name="userName"
+              value="<%= posts[i].userName %> "
+            />
+          </form>
+
           <% if (isLoggedIn) { %>
+
           <div class="rate">
             <!-- <input
                         type="checkbox"
@@ -192,15 +220,18 @@
               comment
             </button>
           </div>
+
           <% } %>
           <!-- end rating and comment ----->
           <!-- ---------------------------->
         </div>
 
         <% } %>
+        <b></b>
+        <% } %>
+
         <!-- ================ end show all posts ===================== -->
         <!-- ======================================================== -->
-
       </div>
     </section>
 
@@ -216,6 +247,5 @@
         }
       }
     </script>
-
   </body>
 </html>

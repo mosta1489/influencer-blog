@@ -13,10 +13,27 @@ const postSchema = mongoose.Schema({
   title: String,
   imagePath: String,
   date: String,
+  dateTime: String,
 });
 
 const post = mongoose.model("post", postSchema);
 
+// ================ get all posts to home page ===============
+function getAllPosts() {
+  return new Promise((resolve, reject) => {
+    connection()
+      .then(async () => {
+        const allPosts = await post.find({});
+        resolve(allPosts);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+// ===========================================================
+
+// ========== add new post admin and user ====================
 function addPost(postData, image) {
   return new Promise((resolve, reject) => {
     connection()
@@ -38,16 +55,31 @@ function addPost(postData, image) {
       .then(async (savePost) => {
         if (savePost) {
           // ========= get date and time =========
+          const monthNames = [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+          ];
           const date = new Date();
-          const dateString = `${date.getFullYear()}-${
-            date.getMonth() + 1
-          }-${date.getDate()}`;
-          const fullDate = `${dateString} ${date.getHours()}:${date.getMinutes()}`;
+          const fullDate = ` ${
+            monthNames[date.getMonth()]
+          } ${date.getDate()}, ${date.getFullYear()}`;
+          const dateTime = ` ${date.getHours()}:${date.getMinutes()}`;
           // ======================================
           const newPost = new post({
             userName: postData.userName,
             title: postData.title,
             date: fullDate,
+            dateTime: dateTime,
           });
           // ========= save image in files =========
           if (image) {
@@ -61,7 +93,7 @@ function addPost(postData, image) {
           }
           // =======================================
           await newPost.save();
-          resolve("Post added successfully");
+          resolve("Post creatd successfully");
         }
       })
       // ==========================================================
@@ -70,5 +102,7 @@ function addPost(postData, image) {
       });
   });
 }
+// ===========================================================
 
 exports.addPost = addPost;
+exports.getAllPosts = getAllPosts;
