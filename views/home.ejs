@@ -4,10 +4,16 @@
     <section id="content">
       <%- include("components/navbat.ejs") %>
       <b></b>
+
+      <!-- include model of send messages -->
       <%- include('components/sendMessage.ejs') %>
+      <!-- ------------------------------ -->
 
       <div class="container">
-        <% if (isAdmin) { %>
+
+        <!-- ================ start create new poost ============================ -->
+
+        <% if (isAdmin) { %> <!-- and user  premium -->
         <form id="addPost" action="/addPost" method="post"></form>
         <div class="card">
           <h4 class="card-header">Create post</h4>
@@ -45,28 +51,32 @@
                 </button>
               </div>
             </div>
-            <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
           </div>
         </div>
         <% } %> <b></b>
-        <% for( let i = 0; i < 11; i++ ) { %>
 
+        <!-- ================ end create new poost ============================ -->
+        <!-- ================================================================== -->
+        
+        <!-- ================================================================== -->
+        <!--================== start show all posts ============================-->
+        <% for( let i = 0; i < 11; i++ ) { %>
         <div class="card">
           <div class="card-body">
             <div class="profile-post">
               <img src="/images/me.jpg" class="card-img" alt="..." />
               <h4>Mostafa Ahmed</h4>
 
-              <!-- ========================================== -->
+              <!-- ------------------------------------------------------ -->
+              <!-- --------------- start save a post ---------------------- -->
               <div class="savePost">
-                <form action="/savePost" method="get" id="savePost">
+                <form action="/savePost" method="post" id="savePost">
                   <input type="hidden" name="postId" value="4565556456" />
                 </form>
 
-                <div class="dropdown save" onclick="myFunction2()">
+                <div class="dropdown save" onclick="myFunction2('<%= i%>')">
                   <i class="fa-solid fa-ellipsis" style="font-size: 20px"></i>
-
-                  <div id="save" class="dropdown-content">
+                  <div id="save<%= i %>" class="dropdown-content button-save">
                     <button
                       class="btn"
                       style="font-size: 1.5rem"
@@ -82,7 +92,8 @@
                   </div>
                 </div>
               </div>
-              <!-- ========================================== -->
+              <!-- --------------- end save a post ---------------------- -->
+              <!-- ------------------------------------------------------ -->
             </div>
             <div class="date">
               <p class="card-text">
@@ -107,7 +118,7 @@
             </a>
           </div>
           <form id="rate<%= i %>" action="/" method="get"></form>
-          <% if (isLoggedIn && !isAdmin) { %>
+          <% if (isLoggedIn) { %>
           <div class="rate">
             <!-- <input
                         type="checkbox"
@@ -134,102 +145,17 @@
         </div>
 
         <% } %>
+        <!-- ================= end show all posts ================================ -->
+        <!-- ================================================================= -->
 
-
-        <!--================test postst=================================== -->
-        <% for( let i = 0; i < 11; i++ ) { %>
-
-          <div class="card">
-            <div class="card-body">
-              <div class="profile-post">
-                <img src="/images/me.jpg" class="card-img" alt="..." />
-                <h4>Mostafa Ahmed</h4>
-  
-                <!-- ========================================== -->
-                <div class="savePost">
-                  <form action="/savePost" method="get" id="savePost">
-                    <input type="hidden" name="postId" value="4565556456" />
-                  </form>
-  
-                  <div class="dropdown save" onclick="myFunction2()">
-                    <i class="fa-solid fa-ellipsis" style="font-size: 20px"></i>
-  
-                    <div id="save" class="dropdown-content">
-                      <button
-                        class="btn"
-                        style="font-size: 1.5rem"
-                        type="submit"
-                        form="savePost"
-                      >
-                        <i
-                          class="fa-solid fa-bookmark"
-                          style="font-size: 22px; margin-right: 3px"
-                        ></i>
-                        save post
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <!-- ========================================== -->
-              </div>
-              <div class="date">
-                <p class="card-text">
-                  <!-- <small class="text-muted"
-                    >Last updated Nov 27, 2021 >>> 85:44</small
-                  > -->
-                  <h6 class="text-muted"
-                    >Last updated  27 / 11 / 2021 >>> 85:44</h6
-                  >
-                </p>
-              </div>
-  
-              <a href="">
-                <p class="card-text">
-                  This is a wider card with supporting text below as a natural
-                  lead-in to additional content. This content is a little bit
-                  longer. This is a wider card with supporting text below as a
-                  natural lead-in to additional content.
-                </p>
-  
-                <img src="/images/ahly.png" class="card-img" alt="..." />
-              </a>
-            </div>
-            <form id="rate<%= i %>" action="/" method="get"></form>
-            <% if (isLoggedIn && !isAdmin) { %>
-            <div class="rate">
-              <!-- <input
-                          type="checkbox"
-                          id="star5"
-                          name="like"
-                          form="rate"
-                        /> -->
-              <!-- <label for="star5" title="text"></label> -->
-              <i class="fa-solid fa-thumbs-up"></i>
-  
-              <div class="comment">
-                <input
-                  type="text"
-                  name="comment"
-                  class="form-control"
-                  form="rate<%= i %>"
-                />
-              </div>
-              <button type="submit" class="btn btn-primary" form="rate<%= i %>">
-                comment
-              </button>
-            </div>
-            <% } %>
-          </div>
-  
-          <% } %>
-        <!--=================================================================================== -->
       </div>
     </section>
 
+    <!-- include java scripts links  -->
     <%- include("components/scripts.ejs") %>
     <script>
-      function myFunction2() {
-        var y = document.getElementById("save");
+      function myFunction2(index) {
+        var y = document.getElementById(`save${index}`);
         if (y.style.display === "none") {
           y.style.display = "block";
         } else {
