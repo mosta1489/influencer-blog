@@ -14,11 +14,16 @@ const userSchema = mongoose.Schema({
   userName: String,
   password: String,
   plan: String,
+  imagePath: {
+    type: String,
+    default: "/images/users/default.png",
+  },
   savedPosts: [],
 });
 
 const userModel = mongoose.model("user", userSchema);
 
+// ========== save new user signup  ==========
 function saveUser(user) {
   return new Promise((resolve, reject) => {
     connection()
@@ -41,7 +46,9 @@ function saveUser(user) {
       });
   });
 }
+// ============================================
 
+// ========== login function  =================
 function postLogin(user) {
   return new Promise((resolve, reject) => {
     connection()
@@ -68,8 +75,9 @@ function postLogin(user) {
       });
   });
 }
+// ============================================
 
-// ========== save post function ===============
+// ========== save post function ==============
 function savePost(userName, postId) {
   return new Promise((resolve, reject) => {
     connection()
@@ -85,25 +93,40 @@ function savePost(userName, postId) {
       // ========= push new post to arrry ===============
       .then(async (savedPosts) => {
         const newPostId = mongoose.Types.ObjectId(postId);
-        savedPosts.push(newPostId);
-        return savedPosts;
+        if (savedPosts.includes(newPostId)) {
+          reject("This post is already saved");
+        } else {
+          savedPosts.push(newPostId);
+          await userModel.updateOne(
+            { userName: userName },
+            { $set: { savedPosts: savedPosts } }
+          );
+          resolve("post saved successfully");
+        }
       })
-
-      // ======== update saved posts array ===============
-      .then(async (newSavedPosts) => {
-        await userModel.updateOne(
-          { userName: userName },
-          { $set: { savedPosts: newSavedPosts } }
-        );
-        resolve("Saved to For Later");
-      })
-
       .catch((error) => {
         reject(error);
       });
   });
 }
-// =============================================
+// ============================================
+
+// ========== get data of user =============
+function getUserData(userName) {
+  return new Promise((resolve, reject) => {
+    connection()
+      .then(async () => {
+        const userData = await userModel.findOne({ userName: userName });
+        resolve(userData);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+// ============================================
+
 exports.saveUser = saveUser;
 exports.postLogin = postLogin;
 exports.savePost = savePost;
+exports.getUserData = getUserData;

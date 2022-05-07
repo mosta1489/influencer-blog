@@ -10,8 +10,8 @@ function savePost(req, res) {
       res.redirect("/");
     })
     .catch((error) => {
-      req.flash(error, error);
-      console.log(error);
+      req.flash("error", error);
+      res.redirect("/");
     });
 }
 

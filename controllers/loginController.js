@@ -8,6 +8,7 @@ function getLogin(req, res, next) {
     isLoggedIn: req.session.userId,
     userName: req.session.userName,
     fullName: req.session.fullName,
+    userImage: req.session.userImage,
   });
 }
 function signup(req, res, next) {
@@ -31,6 +32,7 @@ function postLogin(req, res, next) {
     req.session.userName = "admin";
     req.session.isAdmin = true;
     req.session.fullName = "Admin";
+    req.session.userImage = "/images/users/admin.jpg";
 
     res.redirect("/");
   } else {
@@ -42,6 +44,7 @@ function postLogin(req, res, next) {
         req.session.fullName = userInDB.fullName;
         req.session.userName = userInDB.userName;
         req.session.userPlan = userInDB.plan;
+        req.session.userImage = userInDB.imagePath;
 
         res.redirect("/");
       })

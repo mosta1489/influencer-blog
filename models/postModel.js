@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const userModel = require("./userModel");
 const fs = require("fs");
 
 const DATABASE_URL =
@@ -24,7 +25,22 @@ function getAllPosts() {
     connection()
       .then(async () => {
         const allPosts = await post.find({});
-        resolve(allPosts);
+        return allPosts;
+      })
+      .then(async (allPosts) => {
+        if (allPosts[0]) {
+          for (let i = 0; i < allPosts.length; i++) {
+            await userModel
+              .getUserData(allPosts[i].userName)
+              .then((userData) => {
+                allPosts[i].userImage = userData.imagePath;
+                allPosts[i].userFullName = userData.fullName;
+              });
+          }
+          resolve(allPosts);
+        } else {
+          resolve(allPosts);
+        }
       })
       .catch((error) => {
         reject(error);

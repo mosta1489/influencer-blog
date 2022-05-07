@@ -117,8 +117,12 @@
           <!------- start card body ------------->
           <div class="card-body">
             <div class="profile-post">
-              <img src="/images/me.jpg" class="card-img" alt="..." />
-              <h4 style="color: black">Mostafa Ahmed</h4>
+              <img
+                src="<%= posts[i].userImage %> "
+                class="card-img"
+                alt="..."
+              />
+              <h4 style="color: black"><%= posts[i].userFullName %></h4>
 
               <!----------------------->
               <!--start save a post  -->

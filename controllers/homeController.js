@@ -15,6 +15,7 @@ function getHomePage(req, res, next) {
         userName: req.session.userName,
         fullName: req.session.fullName,
         userPlan: req.session.userPlan,
+        userImage: req.session.userImage,
       });
     })
     .catch((err) => {
