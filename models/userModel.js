@@ -14,8 +14,8 @@ const userSchema = mongoose.Schema({
   userName: String,
   password: String,
   plan: String,
-  comments: [],
-  pinnedPosts: [],
+  // comments: [],
+  savedPosts: [],
 });
 
 const userModel = mongoose.model("user", userSchema);

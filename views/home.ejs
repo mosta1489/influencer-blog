@@ -10,11 +10,49 @@
       <!-- ------------------------------ -->
 
       <div class="container">
+        <!-- =========== alert message  ===========-->
+        <style>
+        .alert button {
+          border: none;
+          position: absolute;
+          right: 30px;
+          background-color: inherit;
+        }
+        </style>
+        <% if (success) { %>
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <%= success %>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="alert"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <% } %>
+          <p></p>
+          <% if (error) { %>
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <%= error %>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="alert"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <% } %>
+        <!-- ====================================== -->
+        <!-- ============= start create new poost ============ -->
 
-        <!-- ================ start create new poost ============================ -->
-
-        <% if (isAdmin) { %> <!-- and user  premium -->
-        <form id="addPost" action="/addPost" method="post"></form>
+        <% if (isAdmin || userPlan == "premium")  { %> 
+        <form id="addPost" action="/addPost" method="post" enctype="multipart/form-data">
+          <input type="hidden" name="userName" value="<%= userName %>" >
+        </form>
         <div class="card">
           <h4 class="card-header">Create post</h4>
           <div class="card-body">
@@ -55,20 +93,22 @@
         </div>
         <% } %> <b></b>
 
-        <!-- ================ end create new poost ============================ -->
-        <!-- ================================================================== -->
+        <!-- =============== end create new poost ============= -->
+        <!-- ================================================== -->
         
-        <!-- ================================================================== -->
-        <!--================== start show all posts ============================-->
-        <% for( let i = 0; i < 11; i++ ) { %>
+        <!-- ================================================= -->
+        <!-- ============== start show all posts ==============-->
+        <% for( let i = 0; i < 10; i++ ) { %>
+
         <div class="card">
+          <!------- start card body ------------->
           <div class="card-body">
             <div class="profile-post">
               <img src="/images/me.jpg" class="card-img" alt="..." />
               <h4>Mostafa Ahmed</h4>
 
-              <!-- ------------------------------------------------------ -->
-              <!-- --------------- start save a post ---------------------- -->
+            <!----------------------->
+            <!--start save a post  -->
               <div class="savePost">
                 <form action="/savePost" method="post" id="savePost">
                   <input type="hidden" name="postId" value="4565556456" />
@@ -92,8 +132,9 @@
                   </div>
                 </div>
               </div>
-              <!-- --------------- end save a post ---------------------- -->
-              <!-- ------------------------------------------------------ -->
+            <!-- end save a post ------>
+            <!------------------------->
+
             </div>
             <div class="date">
               <p class="card-text">
@@ -106,6 +147,8 @@
               </p>
             </div>
 
+            <!------------------------->
+            <!-- start post contant --->
             <a href="">
               <p class="card-text">
                 This is a wider card with supporting text below as a natural
@@ -116,7 +159,15 @@
 
               <img src="/images/mm.jpeg" class="card-img" alt="..." />
             </a>
+            <!-- end post contant ----->
+            <!-- ----------------------->
+
           </div>
+          <!-------- end card body ---------------->
+          <!--------------------------------------->
+
+          <!------------------------------->
+          <!-- start rating and comment --->
           <form id="rate<%= i %>" action="/" method="get"></form>
           <% if (isLoggedIn) { %>
           <div class="rate">
@@ -142,11 +193,13 @@
             </button>
           </div>
           <% } %>
+          <!-- end rating and comment ----->
+          <!-- ---------------------------->
         </div>
 
         <% } %>
-        <!-- ================= end show all posts ================================ -->
-        <!-- ================================================================= -->
+        <!-- ================ end show all posts ===================== -->
+        <!-- ======================================================== -->
 
       </div>
     </section>
@@ -163,5 +216,6 @@
         }
       }
     </script>
+
   </body>
 </html>

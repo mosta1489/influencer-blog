@@ -28,6 +28,7 @@ function postLogin(req, res, next) {
   user = req.body;
   if (user.userName == "admin" && user.password == "admin") {
     req.session.userId = "admin";
+    req.session.userName = "admin";
     req.session.isAdmin = true;
     req.session.fullName = "Admin";
 
@@ -40,6 +41,7 @@ function postLogin(req, res, next) {
         req.session.isAdmin = false;
         req.session.fullName = userInDB.fullName;
         req.session.userName = userInDB.userName;
+        req.session.userPlan = userInDB.plan;
 
         res.redirect("/");
       })
