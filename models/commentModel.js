@@ -101,6 +101,47 @@ function deleteComment(commentId) {
 }
 // ==========================================
 
+// ======== delete all comments of posts ====
+function deletePostComments(postId) {
+  return new Promise((resolve, reject) => {
+    connection()
+      .then(async () => {
+        const newPostId = mongoose.Types.ObjectId(postId);
+        try {
+          await comment.deleteMany({ postId: newPostId });
+          resolve("all comments comment deleted successfully");
+        } catch (error) {
+          resolve(error);
+        }
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+// ==========================================
+
+// ======== edit comment ====================
+function editComment(commentId, newComment) {
+  return new Promise((resolve, reject) => {
+    connection()
+      .then(async () => {
+        const newCommentId = mongoose.Types.ObjectId(commentId);
+        await comment.updateOne(
+          { _id: newCommentId },
+          { $set: { comment: newComment } }
+        );
+        resolve("comment updated successfully");
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+// ==========================================
+
 exports.addNewComment = addNewComment;
 exports.getPostCommnts = getPostCommnts;
 exports.deleteComment = deleteComment;
+exports.deletePostComments = deletePostComments;
+exports.editComment = editComment;

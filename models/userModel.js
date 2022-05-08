@@ -126,7 +126,49 @@ function getUserData(userName) {
 }
 // ============================================
 
+// ========== get saved posts =============
+function getSavedPosts(userName) {
+  return new Promise((resolve, reject) => {
+    connection()
+      .then(async () => {
+        const savedPosts = await userModel.findOne(
+          { userName: userName },
+          { savedPosts: 1, _id: 0 }
+        );
+        resolve(savedPosts);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+// ============================================
+
+// ========== remove post from saved ==========
+function unSavePost(userName, postId) {
+  return new Promise((resolve, reject) => {
+    getUserData(userName)
+      .then(async (userData) => {
+        const savedPosts = userData.savedPosts;
+        const newPostId = mongoose.Types.ObjectId(postId);
+        const index = savedPosts.indexOf(newPostId);
+        savedPosts.splice(index, 1);
+        await userModel.updateOne(
+          { userName: userName },
+          { $set: { savedPosts: savedPosts } }
+        );
+        resolve("post removed from saved successfully");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  });
+}
+// ============================================
+
 exports.saveUser = saveUser;
 exports.postLogin = postLogin;
 exports.savePost = savePost;
+exports.unSavePost = unSavePost;
 exports.getUserData = getUserData;
+exports.getSavedPosts = getSavedPosts;

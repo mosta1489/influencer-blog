@@ -6,7 +6,6 @@ const postModel = require("../models/postModel");
 function savePost(req, res) {
   const userName = req.body.userName;
   const postId = req.body.postId;
-  console.log(req.body);
   userModel
     .savePost(userName, postId)
     .then((result) => {
@@ -25,6 +24,21 @@ function savePost(req, res) {
         res.redirect("/");
       }
     });
+}
+// ============================================
+
+// ========= remove post from saved ===========
+function unSavePost(req, res) {
+  const postId = req.body.postId;
+  userModel
+    .unSavePost(req.session.userName, postId)
+    .then((result) => {
+      console.log(result);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  res.redirect(`/user/savedPosts?userName=${req.session.userName}`);
 }
 // ============================================
 
@@ -88,6 +102,11 @@ function deletePost(req, res) {
       req.flash("success", result);
       res.redirect("/");
     })
+    .then(() => {
+      commentModel
+        .deletePostComments(postId)
+        .then((delet) => console.log(delet));
+    })
     .catch((error) => {
       console.log(error);
       res.redirect("/");
@@ -113,8 +132,64 @@ function deleteComment(req, res) {
 }
 // ============================================
 
+// ========= edit Commen  =====================
+function editComment(req, res) {
+  const commentId = req.body.commentId;
+  const newComment = req.body.newComment;
+  commentModel
+    .editComment(commentId, newComment)
+    .then((result) => {
+      req.flash("success", result);
+      if (req.body.path) {
+        res.redirect(req.body.path);
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      res.redirect(req.body.path);
+    });
+}
+// ============================================
+
+// ========= get saved posts page =============
+function savedPosts(req, res) {
+  const userNameSession = req.session.userName;
+  const userName = req.query.userName;
+
+  if (userNameSession == userName) {
+    userModel
+      .getSavedPosts(userName)
+
+      .then(async (savedPosts) => {
+        await postModel
+          .getSavedPosts(savedPosts.savedPosts)
+
+          .then((posts) => {
+            res.render("savedPosts", {
+              posts: posts,
+              error: req.flash("error")[0],
+              success: req.flash("success")[0],
+              isAdmin: req.session.isAdmin,
+              isLoggedIn: req.session.userId,
+              userName: req.session.userName,
+              fullName: req.session.fullName,
+              userPlan: req.session.userPlan,
+              userImage: req.session.userImage,
+            });
+          });
+      })
+      .catch((error) => console.log(error));
+  } else {
+    res.redirect("/");
+  }
+}
+// ============================================
+
 exports.savePost = savePost;
 exports.addPost = addPost;
 exports.addComment = addComment;
 exports.deletePost = deletePost;
 exports.deleteComment = deleteComment;
+exports.editComment = editComment;
+exports.savedPosts = savedPosts;
+exports.unSavePost = unSavePost;

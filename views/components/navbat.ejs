@@ -16,6 +16,14 @@
           <li class="nav-item">
             <a class="nav-link" style="font-size: 17px" href="/"><b>Home</b></a>
           </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              href="/user/savedPosts?userName=<%= userName %>"
+              style="font-size: 17px"
+              ><b> Saved posts</b></a
+            >
+          </li>
           <% if (isAdmin) { %>
 
           <li class="nav-item">
@@ -36,9 +44,7 @@
             >
           </li>
 
-          <% }else{ %>
-          <b></b>
-          <%# if (plan == 'basic') { %>
+          <% }else if (userPlan !== 'basic') { %>
           <li class="nav-item">
             <button
               style="font-size: 17px"
@@ -50,14 +56,6 @@
               <b>Send message</b>
             </button>
           </li>
-          <%# } %>
-
-          <li class="nav-item">
-            <a class="nav-link" href="#" style="font-size: 17px"
-              ><b> Saved posts</b></a
-            >
-          </li>
-
           <% } %>
           <b></b>
           <% }else{ %>

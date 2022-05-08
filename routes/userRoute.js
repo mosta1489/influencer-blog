@@ -7,24 +7,36 @@ const gardsAdmin = require("./guard/checkAdmin");
 route.post("/savePost", gardsUser.isLoggedIn, userController.savePost);
 // ============================================
 
+// ========= remove post from saved ===========
+route.post("/unSavePost", gardsUser.isLoggedIn, userController.unSavePost);
+// ============================================
+
 // =========== create post route ============
 route.post("/addPost", userController.addPost);
 // ==========================================
 
-// ========== add a new comment ===============
+// ========== add a new comment route =========
 route.post("/addComment", gardsUser.isLoggedIn, userController.addComment);
 // ============================================
 
-// ========== delete a post ===============
-
-// ============================================
+// ========== delete a post route =============
 route.post("/deletePost", gardsUser.isLoggedIn, userController.deletePost);
-// ========== delete a comment ===============
+// ============================================
+
+// ========== edit a comment route ===========
+route.post("/editComment", gardsUser.isLoggedIn, userController.editComment);
+// ============================================
+
+// ========== delete a comment route ==========
 route.post(
   "/deleteComment",
   gardsUser.isLoggedIn,
   userController.deleteComment
 );
+// ============================================
+
+// ========== saved massage route  ============
+route.get("/savedPosts", gardsUser.isLoggedIn, userController.savedPosts);
 // ============================================
 
 module.exports = route;

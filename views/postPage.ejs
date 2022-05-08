@@ -200,7 +200,7 @@
         <!-- ======= start show all commments =============== -->
 
         <div class="card" style="background-color: inherit; border: none">
-          <!------- start card body ------------->
+          <!------- start all comments body ------------->
           <div class="card-body">
             <div class="profile-post">
               <img
@@ -228,7 +228,7 @@
 
               <% if (isAdmin || userName == post.comments[i].userName) { %>
 
-              <!--start delete the comment  -->
+              <!-----------start delete and edit the comment ---------------->
               <div class="savePost">
                 <form
                   action="/user/deleteComment"
@@ -261,10 +261,24 @@
                       ></i>
                       Delete
                     </button>
+                    <!------------- edit comment ---------------->
+                    <button
+                      class="btn"
+                      style="font-size: 1.3rem"
+                      type="button"
+                      onclick="editComment('<%= i %>')"
+                    >
+                      <i
+                        class="fa-solid fa-pencil"
+                        style="font-size: 15px; margin-right: 8px"
+                      ></i>
+                      Edit
+                    </button>
+                    <!-- ---------------------------------------------- -->
                   </div>
                 </div>
               </div>
-              <!-- end delete the comment ------>
+              <!---------------- end delete and edit the comment -------------------->
 
               <% } %>
               <!----------------------------------------------------->
@@ -272,16 +286,67 @@
             </div>
 
             <!------------------------->
-            <!-- start post contant --->
+            <!-- start comment contant --->
 
-            <p class="card-text" style="padding-left: 50px">
+            <p
+              class="card-text"
+              style="padding-left: 50px"
+              id="comment<%= i %>"
+            >
               <%= post.comments[i].comment %>
             </p>
 
-            <!-- end post contant ----->
+            <form
+              action="/user/editComment"
+              id="editComment<%= i %>"
+              method="post"
+            >
+              <input
+                type="hidden"
+                name="commentId"
+                value="<%= post.comments[i].id %>"
+              />
+              <input
+                type="hidden"
+                name="path"
+                value="/post?id=<%= post._id %>"
+              />
+            </form>
+            <style>
+              .edit-comment {
+                grid-template-columns: 0fr 4fr 1fr;
+                display: none;
+              }
+            </style>
+
+            <div class="rate edit-comment" id="textarea-comment<%= i %>">
+              <i></i>
+
+              <div class="comment">
+                <textarea
+                  required
+                  style="resize: none; height: 30px"
+                  name="newComment"
+                  class="form-control"
+                  form="editComment<%= i %>"
+                >
+<%= post.comments[i].comment %></textarea
+                >
+              </div>
+
+              <button
+                type="submit"
+                class="btn btn-primary"
+                form="editComment<%= i %>"
+              >
+                Save
+              </button>
+            </div>
+
+            <!-- end comment contant ----->
             <!-- ----------------------->
           </div>
-          <!-------- end card body ---------------->
+          <!-------- end all comments body ---------------->
           <!--------------------------------------->
         </div>
         <hr />
@@ -309,6 +374,12 @@
         } else {
           y.style.display = "none";
         }
+      }
+      function editComment(index) {
+        var comment = document.getElementById(`comment${index}`);
+        var textArea = document.getElementById(`textarea-comment${index}`);
+        comment.style.display = "none";
+        textArea.style.display = "grid";
       }
     </script>
   </body>

@@ -147,7 +147,24 @@ function getPostData(postData) {
 }
 // ===========================================================
 
+// ======== get saved posts to user ==========================
+function getSavedPosts(savedPosts) {
+  return new Promise((resolve, reject) => {
+    connection()
+      .then(async () => {
+        const posts = await post.find({ _id: { $in: savedPosts } });
+        resolve(posts);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
+// ===========================================================
+
 exports.addPost = addPost;
 exports.getAllPosts = getAllPosts;
 exports.getPostData = getPostData;
 exports.deletePost = deletePost;
+exports.getSavedPosts = getSavedPosts;
