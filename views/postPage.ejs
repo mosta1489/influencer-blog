@@ -10,36 +10,80 @@
       <!-- ------------------------------ -->
 
       <div class="container">
+        <!-- =========== alert message  ===========-->
+        <style>
+          .alert button {
+            border: none;
+            position: absolute;
+            right: 30px;
+            background-color: inherit;
+          }
+          .alert {
+            text-align: center;
+          }
+        </style>
+        <% if (success) { %>
+        <div
+          class="alert alert-success alert-dismissible fade show"
+          role="alert"
+        >
+          <%= success %>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="alert"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <% } %>
+        <p></p>
+        <% if (error) { %>
+        <div
+          class="alert alert-danger alert-dismissible fade show"
+          role="alert"
+        >
+          <%= error %>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="alert"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <% } %>
+        <!-- ======= start post content ===================== -->
+
         <div class="card">
           <!------- start card body ------------->
           <div class="card-body">
             <div class="profile-post">
-              <img
-                src="<%#= posts[i].userImage %> "
-                class="card-img"
-                alt="..."
-              />
-              <h4 style="color: black"><%#= posts[i].userFullName %></h4>
+              <img src="<%= post.userImage %> " class="card-img" alt="..." />
+              <h4 style="color: black"><%= post.fullName %></h4>
 
               <!----------------------->
               <!--start save a post  -->
               <div class="savePost">
                 <form action="/user/savePost" method="post" id="savePost">
+                  <input type="hidden" name="postId" value="<%= post._id %>" />
                   <input
                     type="hidden"
-                    name="postId"
-                    value="<%#= posts[i]._id %>"
+                    name="path"
+                    value="/post?id=<%= post._id %>"
                   />
                   <input
                     type="hidden"
                     name="userName"
-                    value="<%#= userName %>"
+                    value="<%= userName %>"
                   />
                 </form>
 
-                <div class="dropdown save" onclick="myFunction2('<%= i%>')">
+                <div class="dropdown save" onclick="myFunction3()">
                   <i class="fa-solid fa-ellipsis" style="font-size: 20px"></i>
-                  <div id="save<%#= i %>" class="dropdown-content button-save">
+                  <div id="save" class="dropdown-content button-save">
                     <button
                       class="btn"
                       style="font-size: 1.3rem"
@@ -52,6 +96,35 @@
                       ></i>
                       save post
                     </button>
+
+                    <!--------- delete post --------->
+                    <% if (userName == post.userName){ %>
+                    <form
+                      action="/user/deletePost"
+                      method="post"
+                      id="deletePost"
+                    >
+                      <input
+                        type="hidden"
+                        name="postId"
+                        value="<%= post.id %>"
+                      />
+                    </form>
+                    <button
+                      class="btn"
+                      style="font-size: 1.3rem"
+                      type="submit"
+                      form="deletePost"
+                    >
+                      <i
+                        class="fa-solid fa-trash-can"
+                        style="font-size: 15px; margin-right: 8px"
+                      ></i>
+                      delete post
+                    </button>
+
+                    <% } %>
+                    <!-- --------------------------- -->
                   </div>
                 </div>
               </div>
@@ -61,27 +134,21 @@
 
             <p class="card-text" style="margin: -5px 0 15px 55px">
               <small class="text-muted">
-                <%#= posts[i].date %>&nbsp; &nbsp;<%#= posts[i].dateTime %>
+                <%= post.date %>&nbsp; &nbsp;<%= post.dateTime %>
               </small>
             </p>
 
             <!------------------------->
             <!-- start post contant --->
-            <a
-              href="/post?user=<%#= posts[i].userName %>&id=<%#= posts[i].id %>"
-            >
-              <% if (posts[i].title) { %>
-              <p class="card-text"><%#= posts[i].title %></p>
-              <% } %>
-              <b></b>
-              <% if (posts[i].imagePath) { %>
-              <img
-                src="<%#= posts[i].imagePath  %> "
-                class="card-img"
-                alt="..."
-              />
-              <% } %>
-            </a>
+
+            <% if (post.title) { %>
+            <p class="card-text"><%= post.title %></p>
+            <% } %>
+            <b></b>
+            <% if (post.imagePath) { %>
+            <img src="<%= post.imagePath  %> " class="card-img" alt="..." />
+            <% } %>
+
             <!-- end post contant ----->
             <!-- ----------------------->
           </div>
@@ -91,15 +158,12 @@
           <!------------------------------->
           <!-- start rating and comment --->
 
-          <form id="rate<%#= i %>" action="/user/addComment" method="post">
-            <input
-              type="hidden"
-              name="userName"
-              value="<%#= posts[i].userName %>"
-            />
-            <input type="hidden" name="id" value="<%#= posts[i].id %>" />
-            <input type="hidden" name="fullName" value="<%#= fullName %>" />
-            <input type="hidden" name="userImage" value="<%#= userImage %>" />
+          <form id="ratePost" action="/user/addComment" method="post">
+            <input type="hidden" name="userName" value="<%= userName %>" />
+            <input type="hidden" name="id" value="<%= post.id %>" />
+            <input type="hidden" name="fullName" value="<%= fullName %>" />
+            <input type="hidden" name="userImage" value="<%= userImage %>" />
+            <input type="hidden" name="path" value="/post?id=<%= post.id %>" />
           </form>
 
           <% if (isLoggedIn) { %>
@@ -108,14 +172,16 @@
             <i class="fa-solid fa-thumbs-up"></i>
 
             <div class="comment">
-              <input
-                type="text"
+              <textarea
+                required
+                style="resize: none; height: 30px"
                 name="comment"
                 class="form-control"
-                form="rate<%#= i %>"
-              />
+                form="ratePost"
+              ></textarea>
             </div>
-            <button type="submit" class="btn btn-primary" form="rate<%#= i %>">
+
+            <button type="submit" class="btn btn-primary" form="ratePost">
               comment
             </button>
           </div>
@@ -124,14 +190,120 @@
           <!-- end rating and comment ----->
           <!-- ---------------------------->
         </div>
+
+        <!-- ================================================ -->
+        <hr />
+        <!-- ================================================================================================= -->
+
+        <% for( let i = 0; i < post.comments.length; i++ ) { %>
+
+        <!-- ======= start show all commments =============== -->
+
+        <div class="card" style="background-color: inherit; border: none">
+          <!------- start card body ------------->
+          <div class="card-body">
+            <div class="profile-post">
+              <img
+                src="<%= post.comments[i].userImage %> "
+                class="card-img comment-image"
+                alt="..."
+                style="width: 35px; height: 35px"
+              />
+              <h4 style="color: black; font-size: 20px; margin: 0 0 0 -10px">
+                <b><%= post.comments[i].fullName %></b>
+
+                <p
+                  class="card-text"
+                  style="margin: -23px 0px 0px 70%; font-size: 17px"
+                >
+                  <small class="text-muted">
+                    <%= post.comments[i].date %>&nbsp; &nbsp;<%=
+                    post.comments[i].dateTime %>
+                  </small>
+                </p>
+              </h4>
+
+              <!----------------------------------------------------->
+              <!----------------------------------------------------->
+
+              <% if (isAdmin || userName == post.comments[i].userName) { %>
+
+              <!--start delete the comment  -->
+              <div class="savePost">
+                <form
+                  action="/user/deleteComment"
+                  method="post"
+                  id="deleteComment"
+                >
+                  <input
+                    type="hidden"
+                    name="commentId"
+                    value="<%= post.comments[i]._id %>"
+                  />
+                  <input
+                    type="hidden"
+                    name="path"
+                    value="/post?id=<%= post._id %>"
+                  />
+                </form>
+                <div class="dropdown save" onclick="myFunction4('<%= i %>')">
+                  <i class="fa-solid fa-ellipsis" style="font-size: 20px"></i>
+                  <div id="delete<%= i %>" class="dropdown-content button-save">
+                    <button
+                      class="btn"
+                      style="font-size: 1.3rem"
+                      type="submit"
+                      form="deleteComment"
+                    >
+                      <i
+                        class="fa-solid fa-trash-can"
+                        style="font-size: 15px; margin-right: 8px"
+                      ></i>
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <!-- end delete the comment ------>
+
+              <% } %>
+              <!----------------------------------------------------->
+              <!----------------------------------------------------->
+            </div>
+
+            <!------------------------->
+            <!-- start post contant --->
+
+            <p class="card-text" style="padding-left: 50px">
+              <%= post.comments[i].comment %>
+            </p>
+
+            <!-- end post contant ----->
+            <!-- ----------------------->
+          </div>
+          <!-------- end card body ---------------->
+          <!--------------------------------------->
+        </div>
+        <hr />
+
+        <!-- ================================================ -->
+        <% } %>
       </div>
     </section>
 
     <!-- include java scripts links  -->
     <%- include("components/scripts.ejs") %>
     <script>
-      function myFunction2(index) {
-        var y = document.getElementById(`save${index}`);
+      function myFunction3() {
+        var y = document.getElementById(`save`);
+        if (y.style.display === "none") {
+          y.style.display = "block";
+        } else {
+          y.style.display = "none";
+        }
+      }
+      function myFunction4(index) {
+        var y = document.getElementById(`delete${index}`);
         if (y.style.display === "none") {
           y.style.display = "block";
         } else {

@@ -15,6 +15,7 @@ const commentSchema = mongoose.Schema({
   dateTime: String,
   fullName: String,
   userImage: String,
+  actualDAte: Date,
   replies: [],
 });
 
@@ -51,10 +52,11 @@ function addNewComment(commntData) {
           userName: commntData.userName,
           postId: commntData.id,
           comment: commntData.comment,
-          data: fullDate,
+          date: fullDate,
           dateTime: dateTime,
           fullName: commntData.fullName,
           userImage: commntData.userImage,
+          actualDAte: date,
         });
         await newComment.save();
         resolve("comment added successfully");
@@ -71,9 +73,11 @@ function getPostCommnts(postId) {
   return new Promise((resolve, reject) => {
     connection()
       .then(async () => {
-        const postCommnts = await comment.find({
-          postId: postId,
-        });
+        const postCommnts = await comment
+          .find({
+            postId: postId,
+          })
+          .sort({ actualDAte: -1 });
         resolve(postCommnts);
       })
       .catch((error) => reject(error));
@@ -81,5 +85,22 @@ function getPostCommnts(postId) {
 }
 // ==========================================
 
+// ======== delete a comment =============
+function deleteComment(commentId) {
+  return new Promise((resolve, reject) => {
+    connection()
+      .then(async () => {
+        const newCommentId = mongoose.Types.ObjectId(commentId);
+        await comment.deleteOne({ _id: newCommentId });
+        resolve("comment deleted successfully");
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+// ==========================================
+
 exports.addNewComment = addNewComment;
 exports.getPostCommnts = getPostCommnts;
+exports.deleteComment = deleteComment;

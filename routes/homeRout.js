@@ -7,10 +7,6 @@ const gardsAdmin = require("./guard/checkAdmin");
 route.get("/", homeController.getHomePage);
 // ==========================================
 
-// =========== create post route ============
-route.post("/addPost", homeController.addPost);
-// ==========================================
-
 // ======== get post page ===================
 route.get("/post", gardsUser.isLoggedIn, homeController.getPostPage);
 // ==========================================

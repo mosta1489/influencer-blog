@@ -16,6 +16,9 @@ const postSchema = mongoose.Schema({
   imagePath: String,
   date: String,
   dateTime: String,
+  userImage: String,
+  fullName: String,
+  actualDAte: Date,
 });
 
 const post = mongoose.model("post", postSchema);
@@ -25,23 +28,8 @@ function getAllPosts() {
   return new Promise((resolve, reject) => {
     connection()
       .then(async () => {
-        const allPosts = await post.find({});
-        return allPosts;
-      })
-      .then(async (allPosts) => {
-        if (allPosts[0]) {
-          for (let i = 0; i < allPosts.length; i++) {
-            await userModel
-              .getUserData(allPosts[i].userName)
-              .then((userData) => {
-                allPosts[i].userImage = userData.imagePath;
-                allPosts[i].userFullName = userData.fullName;
-              });
-          }
-          resolve(allPosts);
-        } else {
-          resolve(allPosts);
-        }
+        const allPosts = await post.find({}).sort({ actualDAte: -1 });
+        resolve(allPosts);
       })
       .catch((error) => {
         reject(error);
@@ -50,7 +38,7 @@ function getAllPosts() {
 }
 // ===========================================================
 
-// ========== add new post admin and user ====================
+// ========== create new post admin and user ====================
 function addPost(postData, image) {
   return new Promise((resolve, reject) => {
     connection()
@@ -95,8 +83,11 @@ function addPost(postData, image) {
           const newPost = new post({
             userName: postData.userName,
             title: postData.title,
+            userImage: postData.userImage,
+            fullName: postData.fullName,
             date: fullDate,
             dateTime: dateTime,
+            actualDAte: date,
           });
           // ========= save image in files =========
           if (image) {
@@ -120,6 +111,24 @@ function addPost(postData, image) {
   });
 }
 // ===========================================================
+
+// ======== get post data and all comments on post ===========
+function deletePost(postId) {
+  return new Promise((resolve, reject) => {
+    connection()
+      .then(async () => {
+        const posttId = mongoose.Types.ObjectId(postId);
+        await post.deleteOne({ _id: posttId });
+        resolve("Post deleted successfully");
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+// ===========================================================
+
+// ======== get post data and all comments on post ===========
 function getPostData(postData) {
   return new Promise((resolve, reject) => {
     connection()
@@ -136,6 +145,9 @@ function getPostData(postData) {
       .catch((error) => reject(error));
   });
 }
+// ===========================================================
+
 exports.addPost = addPost;
 exports.getAllPosts = getAllPosts;
 exports.getPostData = getPostData;
+exports.deletePost = deletePost;
