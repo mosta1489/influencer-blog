@@ -415,26 +415,6 @@ table {
   flex-wrap: wrap;
 }
 
-th {
-  text-align: left;
-  padding: 5px;
-  color: white;
-  background: #ff5555;
-  font-weight: bold;
-}
-
-td {
-  padding: 10px 5px;
-}
-
-td input {
-  width: 40px;
-  height: 30px;
-  padding: 5px;
-  color: #ff5555;
-  font-size: 12px;
-}
-
 td img {
   width: 80px;
   height: 80px;
@@ -452,16 +432,16 @@ td img {
   max-width: 400px;
 }
 
-td:last-child {
+/* td:last-child {
   text-align: right;
 }
 
 th:last-child {
   text-align: right;
-}
+} */
 /* --------------------------------------------------------------------- */
 /* ......................media query for menu........................... */
-@media only screen and(max-width: 800px) {
+/* @media only screen and(max-width: 800px) {
   nav ul {
     position: absolute;
     top: 70px;
@@ -484,7 +464,10 @@ th:last-child {
     display: block;
     cursor: pointer;
   }
-}
+  nav form .form-input {
+    display: none;
+  }
+} */
 /* media query for less than 600px screen size */
 @media only screen and(max-width: 600px) {
   .row {
@@ -504,5 +487,52 @@ th:last-child {
   .single-product h1 {
     font-size: 26px;
     line-height: 22px;
+  }
+  nav .left {
+    display: none;
+  }
+}
+@media (max-width: 800px) {
+  nav .left form {
+    display: none;
+  }
+  /* .navbar-expand-sm ul { */
+  /* display: none; */
+  /* background: red; */
+  /* } */
+  .navbar-expand-sm ul {
+    margin: 0;
+    padding: 0;
+    background-color: var(--section-packground);
+    position: absolute;
+    /* right: 0; */
+    min-width: 200px;
+    top: 15px;
+    display: none;
+    z-index: 1;
+  }
+  .navbar-expand-sm i {
+    /* display: block; */
+  }
+  .navbar-expand-sm i:hover {
+    cursor: pointer;
+  }
+  .navbar-expand-sm i:hover .navbar-expand-sm ul {
+    display: flex;
+    background: red;
+  }
+
+  .navbar-expand-sm ul li a {
+    text-decoration: none;
+    display: block;
+    padding: 15px;
+    color: #333;
+    transition: 0.4s;
+  }
+}
+
+@media (min-width: 800px) {
+  .navbar-expand-sm i {
+    /* display: none; */
   }
 }
