@@ -206,8 +206,6 @@ function savedPosts(req, res) {
 // ========= setting page =====================
 function getSettingPage(req, res) {
   const userName = req.session.userName;
-  console.log(req.session.fullName);
-  console.log(req.session.userImage);
   userModel.getUserData(userName).then((result) => {
     res.render("settingPage", {
       user: result,
@@ -237,12 +235,12 @@ function updateUserData(req, res) {
   userModel
     .updateUserData(req.session.userId, userFullName, userImage)
     .then((newUserData) => {
-      if (newUserData.newImagePath) {
-        req.session.imagePath = newUserData.newImagePath;
+      if (newUserData.imagePathSave) {
+        req.session.userImage = newUserData.imagePathSave;
       }
 
       req.flash("success", "user data updated successfully");
-      return req.session.imagePath;
+      return req.session.userImage;
     })
     .then((newUserImage) => {
       //===== update post and comments ==========
@@ -257,15 +255,40 @@ function updateUserData(req, res) {
         userFullName,
         newUserImage
       );
+      res.redirect("/user/setting");
       // =======================================
     })
     .catch((error) => {
       console.log(error);
+      res.redirect("/user/setting");
     });
-
-  res.redirect("/user/setting");
 }
 // ============================================
+
+// ========= change passowrd of user ==========
+function changePassword(req, res) {
+  const passowrd = req.body;
+  if (passowrd.newPassword !== passowrd.confirmPassord) {
+    req.flash("error", "Passwords do not match");
+    res.redirect("/user/setting");
+    return;
+  } else {
+    userModel
+      .changePassword(req.session.userName, passowrd)
+      .then((result) => {
+        req.flash("success", result);
+        res.redirect("/user/setting");
+      })
+      .catch((error) => {
+        req.flash("error", error);
+        console.log(error);
+        res.redirect("/user/setting");
+      });
+  }
+}
+
+// ============================================
+
 exports.savePost = savePost;
 exports.addPost = addPost;
 exports.addComment = addComment;
@@ -277,3 +300,4 @@ exports.unSavePost = unSavePost;
 exports.editPost = editPost;
 exports.getSettingPage = getSettingPage;
 exports.updateUserData = updateUserData;
+exports.changePassword = changePassword;

@@ -45,11 +45,20 @@ route.post(
 route.get("/savedPosts", gardsUser.isLoggedIn, userController.savedPosts);
 // ============================================
 
-// ========== setting page route ================
+// ========== setting page route ===============
 route.get("/setting", gardsUser.isLoggedIn, userController.getSettingPage);
-// ============================================
+// =============================================
 
-// ========== edit user route =================
+// ========== edit user route ==================
 route.post("/editUser", gardsUser.isLoggedIn, userController.updateUserData);
 // ============================================
+
+// ========== change password route ============
+route.post(
+  "/changePassword",
+  gardsUser.isLoggedIn,
+  userController.changePassword
+);
+// =============================================
+
 module.exports = route;

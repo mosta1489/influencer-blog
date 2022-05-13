@@ -218,6 +218,40 @@ function updateUserData(userId, userFullName, userImage) {
   });
 }
 // ============================================
+
+function changePassword(userName, password) {
+  return new Promise((resolve, reject) => {
+    connection()
+      .then(async () => {
+        const userData = await userModel.findOne(
+          { userName: userName },
+          { _id: 0, password: 1 }
+        );
+        const checkPassword = await bcrypt.compare(
+          password.oldPassword,
+          userData.password
+        );
+        return checkPassword;
+      })
+
+      .then(async (checkPassword) => {
+        if (checkPassword) {
+          const hashPassword = await bcrypt.hash(password.newPassword, 10);
+          await userModel.updateOne(
+            { userName: userName },
+            { $set: { password: hashPassword } }
+          );
+          resolve("Password updated successfully");
+        } else {
+          reject("Wrong Password");
+        }
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
 exports.saveUser = saveUser;
 exports.postLogin = postLogin;
 exports.savePost = savePost;
@@ -225,3 +259,4 @@ exports.unSavePost = unSavePost;
 exports.getUserData = getUserData;
 exports.getSavedPosts = getSavedPosts;
 exports.updateUserData = updateUserData;
+exports.changePassword = changePassword;
