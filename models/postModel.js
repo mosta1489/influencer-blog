@@ -160,11 +160,27 @@ function getSavedPosts(savedPosts) {
       });
   });
 }
-
 // ===========================================================
+
+// ======== edit post ====================
+function editPost(postId, newPost) {
+  return new Promise((resolve, reject) => {
+    connection()
+      .then(async () => {
+        const newPostId = mongoose.Types.ObjectId(postId);
+        await post.updateOne({ _id: newPostId }, { $set: { title: newPost } });
+        resolve("post updated successfully");
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+// ==========================================
 
 exports.addPost = addPost;
 exports.getAllPosts = getAllPosts;
 exports.getPostData = getPostData;
 exports.deletePost = deletePost;
 exports.getSavedPosts = getSavedPosts;
+exports.editPost = editPost;

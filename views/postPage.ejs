@@ -122,6 +122,26 @@
                       ></i>
                       delete post
                     </button>
+                    <!--------- deit post  --------->
+                    <form action="/user/editPost" method="post" id="editPost">
+                      <input
+                        type="hidden"
+                        name="postId"
+                        value="<%= post.id %>"
+                      />
+                    </form>
+                    <button
+                      class="btn"
+                      style="font-size: 1.3rem"
+                      type="button"
+                      onclick="editPost()"
+                    >
+                      <i
+                        class="fa-solid fa-pencil"
+                        style="font-size: 15px; margin-right: 8px"
+                      ></i>
+                      Edit post
+                    </button>
 
                     <% } %>
                     <!-- --------------------------- -->
@@ -141,10 +161,45 @@
             <!------------------------->
             <!-- start post contant --->
 
-            <% if (post.title) { %>
-            <p class="card-text"><%= post.title %></p>
-            <% } %>
+            <p class="card-text" id="postTitle"><%= post.title %></p>
+
+            <style>
+              .edit-post {
+                display: none;
+                grid-template-columns: 4fr 1fr;
+                margin-bottom: 50px;
+              }
+              .edit-post .save-edit-post {
+                margin-top: 15%;
+              }
+            </style>
+            <div class="rate edit-post" id="textarea-post">
+              <div>
+                <textarea
+                  required
+                  style="height: 70px; resize: none"
+                  name="newPost"
+                  class="form-control"
+                  form="editPost"
+                >
+<%= post.title %></textarea
+                >
+              </div>
+
+              <button
+                type="submit"
+                class="btn btn-primary save-edit-post"
+                form="editPost"
+              >
+                Save
+              </button>
+            </div>
+            <form action="/user/editPost" id="editPost" method="post">
+              <input type="hidden" name="postId" value="<%= post.id %>" />
+            </form>
+
             <b></b>
+
             <% if (post.imagePath) { %>
             <img src="<%= post.imagePath  %> " class="card-img" alt="..." />
             <% } %>
@@ -226,7 +281,8 @@
               <!----------------------------------------------------->
               <!----------------------------------------------------->
 
-              <% if (isAdmin || userName == post.comments[i].userName) { %>
+              <%if (isAdmin || userName == post.comments[i].userName ||
+              post.userName == userName ) { %>
 
               <!-----------start delete and edit the comment ---------------->
               <div class="savePost">
@@ -261,6 +317,9 @@
                       ></i>
                       Delete
                     </button>
+
+                    <% if (userName == post.comments[i].userName) { %>
+
                     <!------------- edit comment ---------------->
                     <button
                       class="btn"
@@ -275,6 +334,8 @@
                       Edit
                     </button>
                     <!-- ---------------------------------------------- -->
+
+                    <% } %>
                   </div>
                 </div>
               </div>
@@ -380,6 +441,12 @@
         var textArea = document.getElementById(`textarea-comment${index}`);
         comment.style.display = "none";
         textArea.style.display = "grid";
+      }
+      function editPost() {
+        var post = document.getElementById(`postTitle`);
+        var textAreaPost = document.getElementById(`textarea-post`);
+        post.style.display = "none";
+        textAreaPost.style.display = "grid";
       }
     </script>
   </body>

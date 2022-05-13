@@ -23,6 +23,12 @@ route.post("/addComment", gardsUser.isLoggedIn, userController.addComment);
 route.post("/deletePost", gardsUser.isLoggedIn, userController.deletePost);
 // ============================================
 
+// ========== edit a post route =============
+
+route.post("/editPost", gardsUser.isLoggedIn, userController.editPost);
+
+// ============================================
+
 // ========== edit a comment route ===========
 route.post("/editComment", gardsUser.isLoggedIn, userController.editComment);
 // ============================================

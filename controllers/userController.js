@@ -114,6 +114,24 @@ function deletePost(req, res) {
 }
 // ============================================
 
+// ========= edit a post  ===============
+function editPost(req, res) {
+  const postId = req.body.postId;
+  const newPost = req.body.newPost;
+  postModel
+    .editPost(postId, newPost)
+    .then((result) => {
+      req.flash("success", result);
+
+      res.redirect("/post?id=" + postId);
+    })
+    .catch((error) => {
+      console.log(error);
+      res.redirect("/post?id=" + postId);
+    });
+}
+// ============================================
+
 // ========= delete a comment  ===============
 function deleteComment(req, res) {
   const commentId = req.body.commentId;
@@ -132,7 +150,7 @@ function deleteComment(req, res) {
 }
 // ============================================
 
-// ========= edit Commen  =====================
+// ========= edit Comment  =====================
 function editComment(req, res) {
   const commentId = req.body.commentId;
   const newComment = req.body.newComment;
@@ -193,3 +211,4 @@ exports.deleteComment = deleteComment;
 exports.editComment = editComment;
 exports.savedPosts = savedPosts;
 exports.unSavePost = unSavePost;
+exports.editPost = editPost;
