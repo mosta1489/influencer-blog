@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const e = require("connect-flash");
+const fs = require("fs");
 
 const DATABASE_URL =
   "mongodb+srv://admin:admin@influencer-cluster.bcp2q.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
@@ -166,9 +167,61 @@ function unSavePost(userName, postId) {
 }
 // ============================================
 
+// ========== update user image & name ========
+function updateUserData(userId, userFullName, userImage) {
+  return new Promise((resolve, reject) => {
+    connection()
+      .then(async () => {
+        const newUserId = mongoose.Types.ObjectId(userId);
+        // ========= if image will be change =========
+        var imagePathSave = "";
+        if (userImage) {
+          const imagenameList = userImage.name.split(".");
+          const imageType = imagenameList[imagenameList.length - 1];
+          const imageName = `${userId}.${imageType}`;
+          const fullPath = `./public/images/users/${imageName}`;
+          const imagePath = `/images/users/${imageName}`;
+          fs.writeFileSync(fullPath, userImage.data);
+          imagePathSave = imagePath;
+          await userModel.updateOne(
+            { _id: newUserId },
+            {
+              $set: {
+                fullName: userFullName,
+                imagePath: imagePathSave,
+              },
+            }
+          );
+        }
+
+        // ==========================================
+        // ========== without image =================
+        else {
+          await userModel.updateOne(
+            { _id: newUserId },
+            {
+              $set: {
+                fullName: userFullName,
+              },
+            }
+          );
+        }
+        // ==========================================
+        resolve({
+          imagePathSave: imagePathSave,
+          userFullName: userFullName,
+        });
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+// ============================================
 exports.saveUser = saveUser;
 exports.postLogin = postLogin;
 exports.savePost = savePost;
 exports.unSavePost = unSavePost;
 exports.getUserData = getUserData;
 exports.getSavedPosts = getSavedPosts;
+exports.updateUserData = updateUserData;

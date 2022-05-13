@@ -162,7 +162,7 @@ function getSavedPosts(savedPosts) {
 }
 // ===========================================================
 
-// ======== edit post ====================
+// ======== edit post ========================================
 function editPost(postId, newPost) {
   return new Promise((resolve, reject) => {
     connection()
@@ -176,7 +176,23 @@ function editPost(postId, newPost) {
       });
   });
 }
-// ==========================================
+// ===========================================================
+
+// ====== update userImage and name of post ==================
+function updatePostsOfUser(userName, fullName, userImage) {
+  return new Promise((resolve, reject) => {
+    connection()
+      .then(async () => {
+        await post.updateMany(
+          { userName: userName },
+          { $set: { fullName: fullName, userImage: userImage } }
+        );
+        resolve("post updated successfully");
+      })
+      .catch((error) => reject(error));
+  });
+}
+// ===========================================================
 
 exports.addPost = addPost;
 exports.getAllPosts = getAllPosts;
@@ -184,3 +200,4 @@ exports.getPostData = getPostData;
 exports.deletePost = deletePost;
 exports.getSavedPosts = getSavedPosts;
 exports.editPost = editPost;
+exports.updatePostsOfUser = updatePostsOfUser;

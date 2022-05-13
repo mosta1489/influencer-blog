@@ -140,8 +140,25 @@ function editComment(commentId, newComment) {
 }
 // ==========================================
 
+// ====== update userImage and name of post ==================
+function updateCommentsOfUser(userName, fullName, userImage) {
+  return new Promise((resolve, reject) => {
+    connection()
+      .then(async () => {
+        await comment.updateMany(
+          { userName: userName },
+          { $set: { fullName: fullName, userImage: userImage } }
+        );
+        resolve("comment updated successfully");
+      })
+      .catch((error) => reject(error));
+  });
+}
+// ===========================================================
+
 exports.addNewComment = addNewComment;
 exports.getPostCommnts = getPostCommnts;
 exports.deleteComment = deleteComment;
 exports.deletePostComments = deletePostComments;
 exports.editComment = editComment;
+exports.updateCommentsOfUser = updateCommentsOfUser;
