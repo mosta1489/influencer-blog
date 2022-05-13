@@ -45,4 +45,11 @@ route.post(
 route.get("/savedPosts", gardsUser.isLoggedIn, userController.savedPosts);
 // ============================================
 
+// ========== setting page route ================
+route.get("/setting", gardsUser.isLoggedIn, userController.getSettingPage);
+// ============================================
+
+// ========== edit user route =================
+route.post("/editUser", gardsUser.isLoggedIn, userController.updateUserData);
+// ============================================
 module.exports = route;

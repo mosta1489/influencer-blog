@@ -203,6 +203,69 @@ function savedPosts(req, res) {
 }
 // ============================================
 
+// ========= setting page =====================
+function getSettingPage(req, res) {
+  const userName = req.session.userName;
+  console.log(req.session.fullName);
+  console.log(req.session.userImage);
+  userModel.getUserData(userName).then((result) => {
+    res.render("settingPage", {
+      user: result,
+      error: req.flash("error")[0],
+      success: req.flash("success")[0],
+      isAdmin: req.session.isAdmin,
+      isLoggedIn: req.session.userId,
+      userName: req.session.userName,
+      fullName: req.session.fullName,
+      userPlan: req.session.userPlan,
+      userImage: req.session.userImage,
+    });
+  });
+}
+// ============================================
+
+// ========= update user data ==================
+function updateUserData(req, res) {
+  var userImage = "";
+  const userFullName = req.body.userFullName;
+  req.session.fullName = userFullName;
+
+  if (req.files) {
+    userImage = req.files.userImage;
+  }
+  // ======= update user data in user model =====
+  userModel
+    .updateUserData(req.session.userId, userFullName, userImage)
+    .then((newUserData) => {
+      if (newUserData.newImagePath) {
+        req.session.imagePath = newUserData.newImagePath;
+      }
+
+      req.flash("success", "user data updated successfully");
+      return req.session.imagePath;
+    })
+    .then((newUserImage) => {
+      //===== update post and comments ==========
+      postModel.updatePostsOfUser(
+        req.session.userName,
+        userFullName,
+        newUserImage
+      );
+
+      commentModel.updateCommentsOfUser(
+        req.session.userName,
+        userFullName,
+        newUserImage
+      );
+      // =======================================
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+  res.redirect("/user/setting");
+}
+// ============================================
 exports.savePost = savePost;
 exports.addPost = addPost;
 exports.addComment = addComment;
@@ -212,3 +275,5 @@ exports.editComment = editComment;
 exports.savedPosts = savedPosts;
 exports.unSavePost = unSavePost;
 exports.editPost = editPost;
+exports.getSettingPage = getSettingPage;
+exports.updateUserData = updateUserData;
