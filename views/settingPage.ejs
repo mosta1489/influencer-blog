@@ -1,0 +1,146 @@
+<html lang="en">
+  <%- include("components/header.ejs") %>
+  <body>
+    <section id="content">
+      <%- include("components/navbat.ejs") %>
+      <b></b>
+
+      <!-- include model of send messages -->
+      <%- include('components/sendMessage.ejs') %>
+      <!-- ------------------------------ -->
+
+      <div class="container">
+        <!-- =========== alert message  ===========-->
+        <style>
+          .alert button {
+            border: none;
+            position: absolute;
+            right: 30px;
+            background-color: inherit;
+          }
+          .alert {
+            text-align: center;
+          }
+        </style>
+        <% if (success) { %>
+        <div
+          class="alert alert-success alert-dismissible fade show"
+          role="alert"
+        >
+          <%= success %>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="alert"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <% } %>
+        <p></p>
+        <% if (error) { %>
+        <div
+          class="alert alert-danger alert-dismissible fade show"
+          role="alert"
+        >
+          <%= error %>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="alert"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <% } %>
+
+        <!-- ================================================= -->
+        <!-- ============== start setting ===================-->
+        <form
+          action="/user/editUser"
+          method="post"
+          id="editUser"
+          enctype="multipart/form-data"
+        ></form>
+        <div class="card-body text-center" style="background-color: #fff">
+          <img
+            src="<%= userImage %>"
+            alt="avatar"
+            class="rounded-circle img-fluid"
+            style="width: 150px"
+          />
+          <style>
+            .full-name {
+              height: 30px;
+              width: 50%;
+              resize: none;
+              margin-left: 25%;
+              text-align: center;
+            }
+            .rounded-circle {
+              width: 150px;
+              height: 150px;
+              border-radius: 50%;
+            }
+          </style>
+          <h3 class="my-3">
+            <textarea
+              required
+              name="userFullName"
+              class="form-control full-name"
+              form="editUser"
+            >
+<%= user.fullName %></textarea
+            >
+          </h3>
+
+          <div class="d-flex justify-content-center mb-2">
+            <div class="input-group">
+              <input
+                name="userImage"
+                form="editUser"
+                type="file"
+                class="form-control"
+              />
+
+              <button
+                form="editUser"
+                style="margin-left: 50px; width: 20%"
+                class="btn btn-primary"
+                type="submit"
+                id="inputGroupFileAddon04"
+              >
+                <b>Save</b>
+              </button>
+            </div>
+          </div>
+        </div>
+        <button
+          class="btn btn-danger"
+          type="button"
+          style="width: 50%; margin: 20px 0 0 25%"
+        >
+          Change Password
+        </button>
+
+        <!-- ================ end setting ================== -->
+        <!-- ======================================================== -->
+      </div>
+    </section>
+
+    <!-- include java scripts links  -->
+    <%- include("components/scripts.ejs") %>
+    <script>
+      function myFunction2(index) {
+        var y = document.getElementById(`save${index}`);
+        if (y.style.display === "none") {
+          y.style.display = "block";
+        } else {
+          y.style.display = "none";
+        }
+      }
+    </script>
+  </body>
+</html>

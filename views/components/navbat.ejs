@@ -85,11 +85,11 @@
   <div class="dropdown profile" onclick="myFunction()">
     <img src="<%= userImage %> " />
     <div id="menu" class="dropdown-content">
-      <% if (!isAdmin) { %>
-      <a href="#"> Profile </a>
+      <% if (userPlan !== 'basic') { %>
+      <a href="/user/profile"> Profile </a>
 
       <% } %>
-      <a href="#">Setting</a>
+      <a href="/user/setting">Setting</a>
       <a href="/login/logout" class="logout"> Logout </a>
     </div>
   </div>
