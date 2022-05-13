@@ -185,6 +185,20 @@
                       delete post
                     </button>
 
+                    <!--------- edit post --------->
+                    <button
+                      class="btn"
+                      style="font-size: 1.3rem"
+                      type="button"
+                      onclick="editPost('<%= i %>')"
+                    >
+                      <i
+                        class="fa-solid fa-pencil"
+                        style="font-size: 15px; margin-right: 8px"
+                      ></i>
+                      Edit post
+                    </button>
+
                     <% } %>
                     <!-- --------------------------- -->
                   </div>
@@ -202,9 +216,47 @@
 
             <!------------------------->
             <!-- start post contant --->
+            <!-- ---edit post--- -->
+            <form action="/user/editPost" method="post" id="editPost">
+              <input type="hidden" name="postId" value="<%= posts[i].id %>" />
+            </form>
+            <style>
+              .edit-post {
+                display: none;
+                grid-template-columns: 4fr 1fr;
+                margin-bottom: 50px;
+              }
+              .edit-post .save-edit-post {
+                margin-top: 15%;
+              }
+            </style>
+            <div class="rate edit-post" id="textarea-post<%= i %>">
+              <div>
+                <textarea
+                  required
+                  style="height: 70px; resize: none"
+                  name="newPost"
+                  class="form-control"
+                  form="editPost"
+                >
+<%= posts[i].title %></textarea
+                >
+              </div>
+
+              <button
+                type="submit"
+                class="btn btn-primary save-edit-post"
+                form="editPost"
+              >
+                Save
+              </button>
+            </div>
+            <!-- ------------ -->
             <a href="/post?id=<%= posts[i].id %>">
               <% if (posts[i].title) { %>
-              <p class="card-text"><%= posts[i].title %></p>
+              <p class="card-text" id="postTitle<%= i %>">
+                <%= posts[i].title %>
+              </p>
               <% } %>
               <b></b>
               <% if (posts[i].imagePath) { %>
@@ -281,6 +333,13 @@
         } else {
           y.style.display = "none";
         }
+      }
+
+      function editPost(index) {
+        var post = document.getElementById(`postTitle${index}`);
+        var textAreaPost = document.getElementById(`textarea-post${index}`);
+        post.style.display = "none";
+        textAreaPost.style.display = "grid";
       }
     </script>
   </body>
