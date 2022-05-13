@@ -194,6 +194,23 @@ function updatePostsOfUser(userName, fullName, userImage) {
 }
 // ===========================================================
 
+// =============== get posts of users =======================
+function getUserPosts(userName) {
+  return new Promise((resolve, reject) => {
+    connection()
+      .then(async () => {
+        const userPosts = await post
+          .find({ userName: userName })
+          .sort({ actualDAte: -1 });
+        resolve(userPosts);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  });
+}
+// ===========================================================
+
 exports.addPost = addPost;
 exports.getAllPosts = getAllPosts;
 exports.getPostData = getPostData;
@@ -201,3 +218,4 @@ exports.deletePost = deletePost;
 exports.getSavedPosts = getSavedPosts;
 exports.editPost = editPost;
 exports.updatePostsOfUser = updatePostsOfUser;
+exports.getUserPosts = getUserPosts;

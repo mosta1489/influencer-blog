@@ -61,4 +61,7 @@ route.post(
 );
 // =============================================
 
+// ========== profile page route ===============
+route.get("/profile", gardsUser.isLoggedIn, userController.getProfilePage);
+// =============================================
 module.exports = route;

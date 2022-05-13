@@ -286,7 +286,25 @@ function changePassword(req, res) {
       });
   }
 }
+// ============================================
 
+// ========= profile page =====================
+function getProfilePage(req, res) {
+  const userName = req.session.userName;
+  postModel.getUserPosts(userName).then((result) => {
+    res.render("profilePage", {
+      posts: result,
+      error: req.flash("error")[0],
+      success: req.flash("success")[0],
+      isAdmin: req.session.isAdmin,
+      isLoggedIn: req.session.userId,
+      userName: req.session.userName,
+      fullName: req.session.fullName,
+      userPlan: req.session.userPlan,
+      userImage: req.session.userImage,
+    });
+  });
+}
 // ============================================
 
 exports.savePost = savePost;
@@ -301,3 +319,4 @@ exports.editPost = editPost;
 exports.getSettingPage = getSettingPage;
 exports.updateUserData = updateUserData;
 exports.changePassword = changePassword;
+exports.getProfilePage = getProfilePage;
