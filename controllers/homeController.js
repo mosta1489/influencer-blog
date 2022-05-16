@@ -1,13 +1,19 @@
 const postModel = require("../models/postModel");
+const userModel = require("../models/userModel");
 const configFile = require("config");
 
 // ==============  getHomePage function ====================
-function getHomePage(req, res, next) {
+async function getHomePage(req, res, next) {
+  const messages = await userModel.getUserData(req.session.userName);
+  const allUsers = await userModel.getAllUsersNames();
+
   postModel
     .getAllPosts()
     .then((posts) => {
       res.render("home", {
         posts: posts,
+        messages: messages.messages,
+        allUsers: allUsers,
         error: req.flash("error")[0],
         success: req.flash("success")[0],
         isAdmin: req.session.isAdmin,
@@ -25,13 +31,18 @@ function getHomePage(req, res, next) {
 // ===========================================================
 
 // =========== get post page =================================
-function getPostPage(req, res) {
+async function getPostPage(req, res) {
+  const messages = await userModel.getUserData(req.session.userName);
+  const allUsers = await userModel.getAllUsersNames();
+
   const postData = req.query;
   postModel
     .getPostData(postData)
     .then((result) => {
       res.render("postPage", {
         post: result,
+        messages: messages.messages,
+        allUsers: allUsers,
         error: req.flash("error")[0],
         success: req.flash("success")[0],
         isAdmin: req.session.isAdmin,

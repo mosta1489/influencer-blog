@@ -20,6 +20,15 @@ const userSchema = mongoose.Schema({
     default: "/images/users/default.png",
   },
   savedPosts: [],
+  messages: [
+    {
+      sender: String,
+      message: String,
+      actualDAte: Date,
+      fullDate: String,
+      dateTime: String,
+    },
+  ],
 });
 
 const userModel = mongoose.model("user", userSchema);
@@ -127,6 +136,21 @@ function getUserData(userName) {
 }
 // ============================================
 
+// ========== get all users =============
+function getAllUser() {
+  return new Promise((resolve, reject) => {
+    connection()
+      .then(async () => {
+        const userData = await userModel.find({});
+        resolve(userData);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+// ============================================
+
 // ========== get saved posts =============
 function getSavedPosts(userName) {
   return new Promise((resolve, reject) => {
@@ -219,6 +243,7 @@ function updateUserData(userId, userFullName, userImage) {
 }
 // ============================================
 
+// ======= change password of user ============
 function changePassword(userName, password) {
   return new Promise((resolve, reject) => {
     connection()
@@ -251,6 +276,132 @@ function changePassword(userName, password) {
       });
   });
 }
+// ============================================
+
+// ========== send a message ==================
+function sendMessage(userName, messageData) {
+  return new Promise((resolve, reject) => {
+    connection()
+      .then(async () => {
+        const messages = await userModel.findOne(
+          { userName: messageData.receiver },
+          { _id: 0, messages: 1 }
+        );
+        return messages.messages;
+      })
+      .then(async (recieverMessages) => {
+        // ========= get date and time =========
+        const monthNames = [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December",
+        ];
+        const date = new Date();
+        const fullDate = ` ${
+          monthNames[date.getMonth()]
+        } ${date.getDate()}, ${date.getFullYear()}`;
+        const dateTime = ` ${date.getHours()}:${date.getMinutes()}`;
+        // ======================================
+        const newMessage = {
+          sender: userName,
+          message: messageData.message,
+          actualDAte: date,
+          fullDate: fullDate,
+          dateTime: dateTime,
+        };
+        recieverMessages.push(newMessage);
+        await userModel.updateOne(
+          { userName: messageData.receiver },
+          { $set: { messages: recieverMessages } }
+        );
+        resolve("Message sent successfully");
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+// ============================================
+
+// ========== get all userName ================
+function getAllUsersNames() {
+  return new Promise((resolve, reject) => {
+    connection()
+      .then(async () => {
+        const userData = await userModel.find({}, { userName: 1, _id: 0 });
+        // console.log(userData);
+        resolve(userData);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+// ============================================
+
+// ========== count of users =================================
+function contOfUser() {
+  return new Promise((resolve, reject) => {
+    connection()
+      .then(async () => {
+        await userModel.aggregate(
+          [
+            {
+              $group: {
+                _id: 0,
+                contOfUser: { $sum: 1 },
+              },
+            },
+            {
+              $project: {
+                _id: 0,
+                contOfUser: 1,
+              },
+            },
+          ],
+          async function (error, result) {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(result);
+            }
+          }
+        );
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+// ===========================================================
+
+// ========== delete a user ==================================
+function deleteUser(userName) {
+  return new Promise((resolve, reject) => {
+    connection()
+      .then(async () => {
+        try {
+          await userModel.deleteOne({ userName: userName });
+          resolve("user deleted successfully");
+        } catch (error) {
+          resolve(error);
+        }
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+// ===========================================================
 
 exports.saveUser = saveUser;
 exports.postLogin = postLogin;
@@ -260,3 +411,8 @@ exports.getUserData = getUserData;
 exports.getSavedPosts = getSavedPosts;
 exports.updateUserData = updateUserData;
 exports.changePassword = changePassword;
+exports.sendMessage = sendMessage;
+exports.getAllUsersNames = getAllUsersNames;
+exports.getAllUser = getAllUser;
+exports.contOfUser = contOfUser;
+exports.deleteUser = deleteUser;

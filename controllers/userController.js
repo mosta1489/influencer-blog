@@ -70,8 +70,9 @@ function addPost(req, res, next) {
 // ===========================================================
 
 // ========= add new comment to post ==========
-function addComment(req, res) {
+async function addComment(req, res) {
   const comment = req.body;
+  await postModel.updateComments(req.body.id);
   commentModel
     .addNewComment(comment)
     .then((result) => {
@@ -170,7 +171,10 @@ function editComment(req, res) {
 // ============================================
 
 // ========= get saved posts page =============
-function savedPosts(req, res) {
+async function savedPosts(req, res) {
+  const messages = await userModel.getUserData(req.session.userName);
+  const allUsers = await userModel.getAllUsersNames();
+
   const userNameSession = req.session.userName;
   const userName = req.query.userName;
 
@@ -185,6 +189,8 @@ function savedPosts(req, res) {
           .then((posts) => {
             res.render("savedPosts", {
               posts: posts,
+              messages: messages.messages,
+              allUsers: allUsers,
               error: req.flash("error")[0],
               success: req.flash("success")[0],
               isAdmin: req.session.isAdmin,
@@ -204,11 +210,16 @@ function savedPosts(req, res) {
 // ============================================
 
 // ========= setting page =====================
-function getSettingPage(req, res) {
+async function getSettingPage(req, res) {
+  const messages = await userModel.getUserData(req.session.userName);
+  const allUsers = await userModel.getAllUsersNames();
+
   const userName = req.session.userName;
   userModel.getUserData(userName).then((result) => {
     res.render("settingPage", {
       user: result,
+      messages: messages.messages,
+      allUsers: allUsers,
       error: req.flash("error")[0],
       success: req.flash("success")[0],
       isAdmin: req.session.isAdmin,
@@ -289,11 +300,16 @@ function changePassword(req, res) {
 // ============================================
 
 // ========= profile page =====================
-function getProfilePage(req, res) {
+async function getProfilePage(req, res) {
+  const messages = await userModel.getUserData(req.session.userName);
+  const allUsers = await userModel.getAllUsersNames();
+
   const userName = req.session.userName;
   postModel.getUserPosts(userName).then((result) => {
     res.render("profilePage", {
       posts: result,
+      messages: messages.messages,
+      allUsers: allUsers,
       error: req.flash("error")[0],
       success: req.flash("success")[0],
       isAdmin: req.session.isAdmin,
@@ -304,6 +320,22 @@ function getProfilePage(req, res) {
       userImage: req.session.userImage,
     });
   });
+}
+// ============================================
+
+// ========= send message function =====================
+function sendMessage(req, res) {
+  userModel
+    .sendMessage(req.session.userName, req.body)
+    .then((result) => {
+      console.log(result);
+      req.flash("success", result);
+      res.redirect("/");
+    })
+    .catch((error) => {
+      console.log(error);
+      res.redirect("/");
+    });
 }
 // ============================================
 
@@ -320,3 +352,4 @@ exports.getSettingPage = getSettingPage;
 exports.updateUserData = updateUserData;
 exports.changePassword = changePassword;
 exports.getProfilePage = getProfilePage;
+exports.sendMessage = sendMessage;

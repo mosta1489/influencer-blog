@@ -20,18 +20,35 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="" method="get" id="message"></form>
+      <form action="/user/sendMessage" method="post" id="message"></form>
       <div class="modal-body">
         <% if (isAdmin) { %>
-        <select class="form-control" name="userName" form="message">
-          <option selected>Choose user</option>
-          <option value="1">One</option>
-          <option value="2">Two</option>
-          <option value="3">Three</option>
+        <select class="form-control" name="receiver" form="message">
+          <% for( let i = 0; i < allUsers.length; i++ ) { %>
+          <b></b>
+          <% if (allUsers[i].userName !== 'admin'){%>
+          <option value="<%= allUsers[i].userName %>">
+            <%= allUsers[i].userName %>
+          </option>
+          <% } %> <% } %>
         </select>
         <br />
+        <% }else{ %>
+        <input
+          name="receiver"
+          type="hidden"
+          class="form-control"
+          form="message"
+          value="admin"
+        />
         <% } %>
-        <input name="message" type="text" class="form-control" form="message" />
+        <input
+          name="message"
+          type="text"
+          class="form-control"
+          form="message"
+          placeholder="message"
+        />
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">

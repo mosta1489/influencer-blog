@@ -19,6 +19,7 @@ const postSchema = mongoose.Schema({
   userImage: String,
   fullName: String,
   actualDAte: Date,
+  commentsNum: { type: Number, default: 0 },
 });
 
 const post = mongoose.model("post", postSchema);
@@ -112,7 +113,7 @@ function addPost(postData, image) {
 }
 // ===========================================================
 
-// ======== get post data and all comments on post ===========
+// ======== delete post data and all comments on post ===========
 function deletePost(postId) {
   return new Promise((resolve, reject) => {
     connection()
@@ -194,7 +195,7 @@ function updatePostsOfUser(userName, fullName, userImage) {
 }
 // ===========================================================
 
-// =============== get posts of users =======================
+// =============== get all posts of users =======================
 function getUserPosts(userName) {
   return new Promise((resolve, reject) => {
     connection()
@@ -211,6 +212,113 @@ function getUserPosts(userName) {
 }
 // ===========================================================
 
+// ========== count of users =================================
+function contOfPost() {
+  return new Promise((resolve, reject) => {
+    connection()
+      .then(async () => {
+        await post.aggregate(
+          [
+            {
+              $group: {
+                _id: 0,
+                contOfPost: { $sum: 1 },
+              },
+            },
+            {
+              $project: {
+                _id: 0,
+                contOfPost: 1,
+              },
+            },
+          ],
+          async function (error, result) {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(result);
+            }
+          }
+        );
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+// ===========================================================
+
+// ============ updata count of comments =====================
+function updateComments(postId) {
+  return new Promise((resolve, reject) => {
+    const newPostId = mongoose.Types.ObjectId(postId);
+    connection()
+      .then(async () => {
+        const comments = await post.findOne(
+          { _id: newPostId },
+          { _id: 0, commentsNum: 1 }
+        );
+        return comments.commentsNum;
+      })
+      .then(async (oldComments) => {
+        const newComments = oldComments + 1;
+        await post.updateOne(
+          { _id: newPostId },
+          { $set: { commentsNum: newComments } }
+        );
+        resolve("number of comments updated successfully");
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+// ===========================================================
+
+// ============ get the post with the most comments ==========
+function getLargePost() {
+  return new Promise((resolve, reject) => {
+    connection()
+      .then(async () => {
+        const largePost = await post.find().sort({ commentsNum: -1 }).limit(1);
+        resolve(largePost[0].id);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  });
+}
+// ===========================================================
+
+// =============== get all ID of posts of users ==============
+function getUserPostsId(userName) {
+  return new Promise((resolve, reject) => {
+    connection()
+      .then(async () => {
+        const userPosts = await post.find({ userName: userName }, { _id: 1 });
+        resolve(userPosts);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  });
+}
+// ===========================================================
+// ======== delete post data and all comments on post ===========
+function deleteUserPosts(userName) {
+  return new Promise((resolve, reject) => {
+    connection()
+      .then(async () => {
+        await post.deleteMany({ userName: userName });
+        resolve("Posts deleted successfully");
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+// ===========================================================
+
 exports.addPost = addPost;
 exports.getAllPosts = getAllPosts;
 exports.getPostData = getPostData;
@@ -219,3 +327,8 @@ exports.getSavedPosts = getSavedPosts;
 exports.editPost = editPost;
 exports.updatePostsOfUser = updatePostsOfUser;
 exports.getUserPosts = getUserPosts;
+exports.contOfPost = contOfPost;
+exports.updateComments = updateComments;
+exports.getLargePost = getLargePost;
+exports.getUserPostsId = getUserPostsId;
+exports.deleteUserPosts = deleteUserPosts;

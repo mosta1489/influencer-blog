@@ -1,52 +1,47 @@
 <html lang="en">
-  <%- include("components/header.ejs") %>
-  <% include("../public/css/admin.css") %> 
+  <%- include("components/header.ejs") %> <% include("../public/css/admin.css")
+  %>
   <body>
     <section id="content">
       <%- include("components/navbat.ejs") %>
       <b></b>
 
       <main>
+        <%- include("components/flash.ejs") %>
+
         <div class="head-title">
           <div class="left">
             <h1>Admin Page</h1>
-            <ul class="breadcrumb">
-              <li>
-                <a href="#">Dashboard</a>
-              </li>
-              <li><i class='bx bx-chevron-right' ></i></li>
-              <li>
-                <a class="active" href="#">Home</a>
-              </li>
-            </ul>
           </div>
         </div>
-  
+
         <ul class="box-info">
           <li>
-            <i class='bx bxs-calendar-check' ></i>
+            <i class="bx bxs-calendar-check"></i>
             <span class="text">
-              <h3>1020</h3>
+              <h3><%= contOfPost %></h3>
               <p>Posts</p>
             </span>
           </li>
           <li>
-            <i class='bx bxs-group' ></i>
+            <i class="bx bxs-group"></i>
             <span class="text">
-              <h3>2834</h3>
+              <h3><%= contOfUser %></h3>
               <p>Number of Users</p>
             </span>
           </li>
           <li>
-            <i class='bx bxs-dollar-circle' ></i>
+            <a href="/post?id=<%= largePost %>">
+              <i class="bx bxs-calendar-check"></i>
+            </a>
+
             <span class="text">
-              <h3>$2543</h3>
-              <p>The Most Liked Post</p>
+              <h6 style="color: black">The post with the most interaction</h6>
+              <!-- <p>The Most Liked Post</p> -->
             </span>
           </li>
         </ul>
-  
-  
+
         <div class="table-data">
           <div class="order">
             <table>
@@ -54,20 +49,46 @@
                 <tr>
                   <th>User</th>
                   <th>User Plan</th>
-                  <th>Message</th>
+                  <!-- <th>Message</th> -->
                   <th>Delete</th>
                 </tr>
               </thead>
               <tbody>
+                <% for( let i = 1; i < usersData.length; i++ ) { %>
+
                 <tr>
                   <td>
-                    <img src="images/user-1.png">
-                    <p>John Doe</p>
+                    <img src="<%= usersData[i].imagePath %>" />
+                    <p><%= usersData[i].fullName %></p>
                   </td>
-                  <td><button class="status detailed">Basic</button></td>
-                  <td><a href=""><button class="status completed">Send Message</button></a></td>
-                  <td><a href=""><button class="status deleted">Delete User</button></a></td>
+                  <td>
+                    <button class="status basic" style="cursor: default">
+                      <%= usersData[i].plan %>
+                    </button>
+                  </td>
+                  <form
+                    action="/admin/deleteUser"
+                    method="post"
+                    id="deleteUser<%= i %>"
+                  >
+                    <input
+                      type="hidden"
+                      name="userName"
+                      value="<%= usersData[i].userName %>"
+                    />
+                  </form>
+                  <td>
+                    <button
+                      class="status deleted"
+                      type="submit"
+                      form="deleteUser<%= i %>"
+                    >
+                      Delete User
+                    </button>
+                  </td>
                 </tr>
+
+                <% } %>
               </tbody>
             </table>
           </div>

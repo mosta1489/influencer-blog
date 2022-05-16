@@ -64,4 +64,9 @@ route.post(
 // ========== profile page route ===============
 route.get("/profile", gardsUser.isLoggedIn, userController.getProfilePage);
 // =============================================
+
+// ========== send a massage ===============
+route.post("/sendMessage", gardsUser.isLoggedIn, userController.sendMessage);
+// =============================================
+
 module.exports = route;

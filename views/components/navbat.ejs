@@ -73,10 +73,24 @@
 
   <% if (isLoggedIn) { %>
 
-  <a href="#" class="notification">
-    <i class="bx bxs-bell"></i>
-    <span class="num">8</span>
-  </a>
+  </style>
+  <div class="dropdown" onclick="notification()">
+    <a href="#" class="notification">
+      <i class="bx bxs-bell"></i>
+      <span class="num"><%= messages.length %></span>
+    </a>
+    <div id="notification" class="dropdown-content">
+      <% for( let i = 0; i < messages.length; i++ ) { %>
+      <button
+      style="font-size: 17px"
+      type="button"
+      class="btn"
+      data-toggle="modal"
+      data-target="#exampleModalCenter"> <%= messages[i].message %> </button>
+      <hr>
+      <% } %>
+    </div>
+  </div>
 
   <div style="width: 15%; text-align: center">
     <b style="font-size: 20px"><%= fullName %></b>
@@ -107,6 +121,15 @@
 <script>
   function myFunction() {
     var x = document.getElementById("menu");
+    if (x.style.display === "none") {
+      x.style.display = "block";
+    } else {
+      x.style.display = "none";
+    }
+  }
+
+  function notification() {
+    var x = document.getElementById("notification");
     if (x.style.display === "none") {
       x.style.display = "block";
     } else {
