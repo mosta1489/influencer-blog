@@ -3,8 +3,11 @@ const userModel = require("../models/userModel");
 const configFile = require("config");
 
 // ==============  getHomePage function ====================
+var messages = { messages: [] };
 async function getHomePage(req, res, next) {
-  const messages = await userModel.getUserData(req.session.userName);
+  if (req.session.userName) {
+    messages = await userModel.getUserData(req.session.userName);
+  }
   const allUsers = await userModel.getAllUsersNames();
 
   postModel
@@ -12,7 +15,7 @@ async function getHomePage(req, res, next) {
     .then((posts) => {
       res.render("home", {
         posts: posts,
-        messages: messages.messages,
+        messages: messages.messages.reverse(),
         allUsers: allUsers,
         error: req.flash("error")[0],
         success: req.flash("success")[0],
@@ -41,7 +44,7 @@ async function getPostPage(req, res) {
     .then((result) => {
       res.render("postPage", {
         post: result,
-        messages: messages.messages,
+        messages: messages.messages.reverse(),
         allUsers: allUsers,
         error: req.flash("error")[0],
         success: req.flash("success")[0],

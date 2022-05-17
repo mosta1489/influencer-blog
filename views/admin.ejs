@@ -1,6 +1,8 @@
 <html lang="en">
   <%- include("components/header.ejs") %> <% include("../public/css/admin.css")
   %>
+  <b></b>
+  <%- include('components/message-detail.ejs') %>
   <body>
     <section id="content">
       <%- include("components/navbat.ejs") %>
@@ -28,7 +30,7 @@
           <li>
             <i class="bx bxs-group"></i>
             <span class="text">
-              <h3><%= contOfUser %></h3>
+              <h3><%= contOfUser - 1 %></h3>
               <p>Number of Users</p>
             </span>
           </li>

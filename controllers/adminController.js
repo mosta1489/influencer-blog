@@ -18,7 +18,7 @@ async function getAdminPage(req, res) {
     .getAllUser()
     .then((usersData) => {
       res.render("admin", {
-        messages: messages.messages,
+        messages: messages.messages.reverse(),
         allUsers: allUsers,
         usersData: usersData,
         largePost: largePost,

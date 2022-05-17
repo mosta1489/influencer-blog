@@ -1,17 +1,17 @@
 <nav style="position: fixed; width: 100%; margin-bottom: 20px">
-  <div class="left row">
-    <!-- <form class="col" action="/search/" method="get">
-      <div class="form-input">
-        <input name="search" type="search" placeholder="Search..." />
-        <button type="submit" class="search-btn">
-          <i class="bx bx-search"></i>
-        </button>
-      </div>
-    </form> -->
+  <style>
+    .message-paragraph {
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      height: 22px;
+      white-space: nowrap;
+    }
+  </style>
 
+  <div class="left row">
     <div class="col">
       <nav class="navbar navbar-expand-sm bg-light">
-        <!-- <i class="fa-solid fa-list"></i> -->
         <ul class="navbar-nav" id="links-nav">
           <% if (isLoggedIn) { %>
           <li class="nav-item">
@@ -70,25 +70,35 @@
   </div>
 
   <b></b>
-
   <% if (isLoggedIn) { %>
 
-  </style>
   <div class="dropdown" onclick="notification()">
     <a href="#" class="notification">
       <i class="bx bxs-bell"></i>
       <span class="num"><%= messages.length %></span>
     </a>
+
     <div id="notification" class="dropdown-content">
-      <% for( let i = 0; i < messages.length; i++ ) { %>
-      <button
-      style="font-size: 17px"
-      type="button"
-      class="btn"
-      data-toggle="modal"
-      data-target="#exampleModalCenter"> <%= messages[i].message %> </button>
-      <hr>
-      <% } %>
+      <% if (messages[0]) { %>
+      <b></b>
+      <% for( let i = 0; i < 5; i++ ) { %>
+
+      <hr />
+      <div
+        onclick="messageModel('<%= messages[i].message %>', '<%= messages[i].sender %>',
+        '<%= messages[i].fullDate %>','<%= messages[i].dateTime %>')"
+      >
+        <button
+          style="font-size: 17px; width: 300px"
+          type="button"
+          class="btn"
+          data-toggle="modal"
+          data-target="#message-detail"
+        >
+          <p class="message-paragraph"><%= messages[i].message %></p>
+        </button>
+      </div>
+      <% } %> <% } %>
     </div>
   </div>
 
@@ -100,7 +110,7 @@
     <img src="<%= userImage %> " />
     <div id="menu" class="dropdown-content">
       <% if (userPlan !== 'basic') { %>
-      <a href="/user/profile"> Profile </a>
+      <a href="/user/profile?userName=<%= userName %>"> Profile </a>
 
       <% } %>
       <a href="/user/setting">Setting</a>

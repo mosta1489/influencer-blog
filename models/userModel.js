@@ -24,7 +24,6 @@ const userSchema = mongoose.Schema({
     {
       sender: String,
       message: String,
-      actualDAte: Date,
       fullDate: String,
       dateTime: String,
     },
@@ -314,7 +313,6 @@ function sendMessage(userName, messageData) {
         const newMessage = {
           sender: userName,
           message: messageData.message,
-          actualDAte: date,
           fullDate: fullDate,
           dateTime: dateTime,
         };

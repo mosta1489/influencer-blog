@@ -1,0 +1,80 @@
+<!--============ Modal ==================  -->
+<div
+  class="modal fade"
+  id="message-detail"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">
+          Message from
+          <b id="senderName"></b>
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="/user/sendMessage" method="post" id="messageReplay"></form>
+      <div class="modal-body">
+        <h6>
+          <b class="text-muted" id="fullDate"></b>
+        </h6>
+
+        <br />
+        <b id="messageDetail"></b>
+        <br />
+
+        <% if (isAdmin || userPlan == "premium") { %>
+
+        <select style="display: none" name="receiver" form="messageReplay">
+          <option id="senderNameOption"></option>
+        </select>
+
+        <br />
+        <input
+          name="message"
+          type="text"
+          class="form-control"
+          form="messageReplay"
+          placeholder="message"
+        />
+        <% } %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
+        <% if (isAdmin || userPlan == 'premium' ) { %>
+        <button type="submit" class="btn btn-primary" form="messageReplay">
+          Send
+        </button>
+        <% } %>
+      </div>
+    </div>
+  </div>
+  <!-- ===================================== -->
+</div>
+<!--============ End Modal ==================  -->
+<script>
+  function messageModel(message, sender, date, time) {
+    var messageDetail = document.getElementById("messageDetail");
+    messageDetail.innerHTML = message;
+
+    var senderNameElement = document.getElementById("senderName");
+    var senderNameOption = document.getElementById("senderNameOption");
+    senderNameElement.innerHTML = sender;
+    senderNameOption.innerHTML = sender;
+
+    var senderNameElement = document.getElementById("fullDate");
+    senderNameElement.innerHTML = date + " &nbsp;  &nbsp; " + time;
+  }
+</script>

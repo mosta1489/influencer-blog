@@ -7,6 +7,8 @@
 
       <!-- include model of send messages -->
       <%- include('components/sendMessage.ejs') %>
+      <b></b>
+      <%- include('components/message-detail.ejs') %>
       <!-- ------------------------------ -->
 
       <div class="container">
@@ -19,7 +21,9 @@
           <!------- start card body ------------->
           <div class="card-body">
             <div class="profile-post">
-              <img src="<%= post.userImage %> " class="card-img" alt="..." />
+              <a href="/user/profile?userName=<%= post.userName %>">
+                <img src="<%= post.userImage %> " class="card-img" alt="..." />
+              </a>
               <h4 style="color: black"><%= post.fullName %></h4>
 
               <!----------------------->
@@ -216,12 +220,14 @@
           <!------- start all comments body ------------->
           <div class="card-body">
             <div class="profile-post">
-              <img
-                src="<%= post.comments[i].userImage %> "
-                class="card-img comment-image"
-                alt="..."
-                style="width: 35px; height: 35px"
-              />
+              <a href="/user/profile?userName=<%= post.comments[i].userName %>">
+                <img
+                  src="<%= post.comments[i].userImage %> "
+                  class="card-img comment-image"
+                  alt="..."
+                  style="width: 35px; height: 35px"
+                />
+              </a>
               <h4 style="color: black; font-size: 20px; margin: 0 0 0 -10px">
                 <b><%= post.comments[i].fullName %></b>
 

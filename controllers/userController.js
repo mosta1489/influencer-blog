@@ -189,7 +189,7 @@ async function savedPosts(req, res) {
           .then((posts) => {
             res.render("savedPosts", {
               posts: posts,
-              messages: messages.messages,
+              messages: messages.messages.reverse(),
               allUsers: allUsers,
               error: req.flash("error")[0],
               success: req.flash("success")[0],
@@ -218,7 +218,7 @@ async function getSettingPage(req, res) {
   userModel.getUserData(userName).then((result) => {
     res.render("settingPage", {
       user: result,
-      messages: messages.messages,
+      messages: messages.messages.reverse(),
       allUsers: allUsers,
       error: req.flash("error")[0],
       success: req.flash("success")[0],
@@ -303,12 +303,12 @@ function changePassword(req, res) {
 async function getProfilePage(req, res) {
   const messages = await userModel.getUserData(req.session.userName);
   const allUsers = await userModel.getAllUsersNames();
-
-  const userName = req.session.userName;
-  postModel.getUserPosts(userName).then((result) => {
+  const userProfile = req.query.userName;
+  // const userName = req.session.userName;
+  postModel.getUserPosts(userProfile).then((result) => {
     res.render("profilePage", {
       posts: result,
-      messages: messages.messages,
+      messages: messages.messages.reverse(),
       allUsers: allUsers,
       error: req.flash("error")[0],
       success: req.flash("success")[0],
