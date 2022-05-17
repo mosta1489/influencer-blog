@@ -3,13 +3,12 @@ const userModel = require("../models/userModel");
 const configFile = require("config");
 
 // ==============  getHomePage function ====================
-var messages = { messages: [] };
+// var messages = { messages: [] };
 async function getHomePage(req, res, next) {
   if (req.session.userName) {
     messages = await userModel.getUserData(req.session.userName);
   }
   const allUsers = await userModel.getAllUsersNames();
-
   postModel
     .getAllPosts()
     .then((posts) => {
