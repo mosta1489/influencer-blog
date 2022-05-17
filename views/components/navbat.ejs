@@ -75,7 +75,9 @@
   <div class="dropdown" onclick="notification()">
     <a href="#" class="notification">
       <i class="bx bxs-bell"></i>
+      <% if (messages) { %>
       <span class="num"><%= messages.length %></span>
+      <% } %>
     </a>
 
     <div id="notification" class="dropdown-content">
