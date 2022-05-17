@@ -5,6 +5,7 @@ const configFile = require("config");
 // ==============  getHomePage function ====================
 // var messages = { messages: [] };
 async function getHomePage(req, res, next) {
+  var messages = { messages: [] };
   if (req.session.userName) {
     messages = await userModel.getUserData(req.session.userName);
   }
